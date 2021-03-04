@@ -1,0 +1,2933 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>Unnamed project Test Execution Report</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript">
+            /**
+            * jQuery.fn.sortElements
+            * --------------
+            * #author James Padolsey (http://james.padolsey.com)
+            * #version 0.11
+            * #updated 18-MAR-2010
+            * #url https://raw.github.com/jamespadolsey/jQuery-Plugins/master/sortElements/jquery.sortElements.js
+            * --------------
+            * #param Function comparator:
+            *   Exactly the same behaviour as [1,2,3].sort(comparator)
+            *   
+            * #param Function getSortable
+            *   A function that should return the element that is
+            *   to be sorted. The comparator will run on the
+            *   current collection, but you may want the actual
+            *   resulting sort to occur on a parent or another
+            *   associated element.
+            *   
+            *   E.g. $('td').sortElements(comparator, function(){
+            *      return this.parentNode; 
+            *   })
+            *   
+            *   The <td>'s parent (<tr>) will be sorted instead
+            *   of the <td> itself.
+            */
+            jQuery.fn.sortElements = (function () {
+
+                var sort = [].sort;
+
+                return function (comparator, getSortable) {
+
+                    getSortable = getSortable || function () { return this; };
+
+                    var placements = this.map(function () {
+
+                        var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+
+                        // Since the element itself will change position, we have
+                        // to have some way of storing it's original position in
+                        // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+
+                        return function () {
+
+                            if (parentNode === this) {
+                                throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                            }
+
+                            // Insert before flag:
+                            parentNode.insertBefore(this, nextSibling);
+                            // Remove flag:
+                            parentNode.removeChild(nextSibling);
+
+                        };
+
+                    });
+
+                    return sort.call(this, comparator).each(function (i) {
+                        placements[i].call(getSortable.call(this));
+                    });
+
+                };
+
+            })();
+        </script>
+        <script type="text/javascript">
+            jQuery.fn.setBarSizes = (function () {
+                return function (metricName, maxBarSize, min) {
+                    var max = Math.max.apply(Math, $.makeArray($(this).map(function () { return Number($(this).attr('data-sr-' + metricName)); })));
+                    var scale = 1.0;
+                    while (max > 0.0 && max <= 10.0) {
+                        scale = scale * 10.0;
+                        max = max * 10.0;
+                    }
+                    max = (Math.ceil(max / 2) * 2) / scale;
+
+                    this.each(function () {
+                        var barAnchor = $(this).find('a');
+                        var actual = $(this).attr('data-sr-' + metricName);
+                        var newHeight = Math.max(Math.round(maxBarSize * (actual - min) / (max - min)), 2);
+                        barAnchor.css({ height: newHeight });
+                    });
+
+                    var unit = "";
+                    if (metricName.substr(metricName.length - 4, 4) === "time")
+                        unit = "s";
+
+                    $('#testview .scale-min-label').each(function () {
+                        $(this).text(min.toString() + unit);
+                    });
+                    $('#testview .scale-max-label').each(function () {
+                        $(this).text(max.toString() + unit);
+                    });
+                    var mid = max / 2;
+                    $('#testview .scale-mid-label').each(function () {
+                        $(this).text(mid.toString() + unit);
+                    });
+                };
+            })();
+
+            function getComparer(metricName, isDesc) {
+                return function (a, b) {
+                    var aNumber = Number($(a).attr('data-sr-' + metricName));
+                    var bNumber = Number($(b).attr('data-sr-' + metricName));
+                    var result = aNumber > bNumber ? 1 : (aNumber < bNumber ? -1 : 0);
+                    if (isDesc)
+                        result = -1 * result;
+
+                    if (result == 0 && metricName != "order")
+                        result = getComparer("order", false)(a, b);
+
+                    return result;
+                };
+            }
+
+            var currentSort = "";
+            function doSort(allowToggleDesc) {
+                var newSort = $("input[name='barSortOrder']:checked").val();
+                if (allowToggleDesc && currentSort == newSort) {
+                    $('#barSortDesc').click();
+                    doSort(false);
+                    return;
+                }
+                currentSort = newSort;
+                $('#testview td.testview-item').sortElements(getComparer(newSort, $('#barSortDesc').is(':checked')));
+            }
+
+
+            function doSetHeights(allowSort) {
+                var selectedMetric = $("input[name='barHeight']:checked").val();
+                $('#testview td.testview-item').setBarSizes(selectedMetric, 60, 0.0);
+
+                if (allowSort && currentSort != selectedMetric) {
+                    var $radios = $("input[name='barSortOrder']");
+                    $radios.filter('[value=' + selectedMetric + ']').attr('checked', true);
+                    $("#barSortDesc").attr("checked", [true]);
+                    doSort(false);
+                }
+            }
+
+            $(document).ready(function () {
+                $("input[name='barSortOrder']").click(function () { doSort(true); return true; });
+                $("input[name='barSortDesc']").change(function () { doSort(false); });
+                $("input[name='barHeight']").change(function () { doSetHeights(true); });
+
+                doSort(false);
+                doSetHeights(false);
+
+                $("div.scrollable").css({ 'overflow': 'auto' });
+            });
+        </script>
+
+        <style type="text/css">
+            body 
+            {
+                color: #000000;
+                font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif;
+                line-height: 130%;
+            }
+            h1 {
+                font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;
+                font-size: 170%;
+                font-weight: bold;
+            }            
+            h2 {
+                font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;
+                font-size: 130%;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }            
+            h3 {
+                font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;
+                font-size: 120%;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }            
+            a.bar
+            {
+                text-decoration: none;
+                display: block;
+                line-height: 1px;
+            }
+            .description
+            {
+                font-style: italic;
+            }
+            .log 
+            {
+                width: 600px;
+                white-space: pre-wrap;
+                display: block;
+                margin: 0px;
+            }
+            .errorMessage 
+            {
+                width: 600px;
+                color: Red;
+                font-weight: bold;
+            }
+            .stackTrace 
+            {
+                width: 600px;
+                white-space: pre-wrap;
+                font-style: italic;
+                color: Red;
+                display: block;
+            }
+            table.testEvents
+            {
+                border: solid 1px #e8eef4;
+                border-collapse: collapse;
+            }
+            table.testEvents td
+            {
+                vertical-align: top;
+                padding: 5px;
+                border: solid 1px #e8eef4;
+            }
+            table.testEvents th
+            {
+                padding: 6px 5px;
+                text-align: left;
+                background-color: #e8eef4;
+                border: solid 1px #e8eef4;                
+            }
+            .comment
+            {
+                font-style: italic;
+                font-size: smaller;
+            }
+            .startupBar
+            {
+                background-color: #EEEEEE;
+                cursor: default;
+            }
+            
+            .colorSucceeded
+            {
+                background-color: #90ED7B;
+            }
+            .colorIgnored
+            {
+                background-color: #FFFF85;
+            }
+            .colorPending
+            {
+                background-color: #D47BED;
+            }
+            .colorNothingToRun
+            {
+                background-color: #CCCCFF;
+            }
+            .colorSkipped
+            {
+                background-color: #CCCCFF;
+            }
+            .colorInconclusive
+            {
+                background-color: #7BEDED;
+            }
+            .colorCleanupFailed
+            {
+                background-color: #FFCCCC;
+            }
+            .colorRandomlyFailed
+            {
+                background-color: #EDB07B;
+            }
+            .colorFailed
+            {
+                background-color: #ED5F5F;
+            }
+            .colorInitializationFailed
+            {
+                background-color: #FF0000;
+            }
+            .colorFrameworkError
+            {
+                background-color: #FF0000;
+            }
+            ul.subNodeLinks
+            {
+                padding-left: 20px;
+                margin: 0px;
+            }
+            ul.subNodeLinks li
+            {
+                list-style: none;
+            }
+            
+            /* views general */
+            div.scrollable
+            {
+                /*overflow: auto; - thsi has to be set from js, because of an IE9 bug */
+            }
+            div.viewbox
+            {
+                position: relative;
+                border: 3px solid #e8eef4;
+            }
+            div.viewbox table
+            {
+                border: 0px;
+            }
+                        
+            /* testview */
+            #testview
+            {
+                padding-top: 23px;
+            }
+            
+            table.testview-items td
+            {
+                vertical-align: bottom;
+                padding: 0px 1px 0px 1px;
+            }
+            td.right-padding, td.left-padding
+            {
+                width: 25px;
+                min-width: 25px;
+            }
+            table.testview-items a.bar
+            {
+                width: 5px;
+            }
+            table.testview-items tr.testview-items-row
+            {
+                height: 60px;
+            }
+            
+            /* scale */
+            table.vertical-scale 
+            {
+                position: absolute;
+                top: 23px;
+                left: 0px;
+                width: 100%;
+                z-index: -100;
+            }
+            table.vertical-scale td, tr.horizontal-scale td
+            {
+                font-size: 60%;
+                line-height: normal;
+            }
+            table.vertical-scale tr.scale-max, table.vertical-scale tr.scale-mid 
+            {
+                height: 30px;
+            }
+            tr.horizontal-scale, table.vertical-scale tr.scale-min 
+            {
+                height: 12px;
+            }
+            
+            td.scale-max-label, td.scale-mid-label, td.scale-min-label
+            {
+                border-top: solid 1px #E6E6E6;
+                text-align: left;
+                vertical-align: top;
+            }
+            td.scale-10-label
+            {
+                border-left: solid 1px #E6E6E6;
+                text-align: left;
+                vertical-align: bottom;
+                padding-left: 1px;
+            }
+            tr.scale-mid td, tr.scale-min td, tr.scale-max td
+            {
+                border-top: solid 1px #E6E6E6;
+            }
+           
+            
+            /* bar-control */
+            #bar-control
+            {
+                font-size: 60%;
+                line-height: normal;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+            }
+            #bar-control label
+            {
+                font-weight: bold;
+                vertical-align: middle;
+            }
+            #bar-control .option
+            {
+                vertical-align: middle;
+                text-transform: lowercase;
+            }
+            #bar-control input[type="checkbox"]
+            {
+                padding: 0 2px 0 3px;
+            }
+            #bar-control input
+            {
+                vertical-align: top;
+                height: 12px;
+                margin: 0px;
+                padding: 0px;
+            }
+            #bar-control div
+            {
+                float: right;
+                margin: 3px 5px 3px 5px;
+            }
+
+            /* timeline view */
+            #timelineview
+            {
+                padding-top: 5px;
+            }
+            table.timelineview a
+            {
+                height: 20px;
+            }
+            table.timelineview td
+            {
+                vertical-align: bottom;
+                padding: 0px 1px 0px 0px;
+                border: 0px;
+            }
+            tr.thread-items-row
+            {
+                height: 25px;
+            }
+            tr.thread-items-row td
+            {
+                vertical-align: bottom;
+            }
+            td.thread-label
+            {
+                padding: 0px 6px 0px 6px;
+                text-align: right;
+                line-height: 18px;
+                vertical-align: bottom;
+            }
+            th.thread-label
+            {
+                padding: 3px 6px 0px 6px;
+                line-height: 18px;
+                text-align: left;
+                vertical-align: bottom;
+            }
+        </style>
+	</head>
+	<body>
+        <h1>Unnamed project Test Execution Report</h1>
+        
+    <ul>
+        <li>Project: Unnamed project</li>
+        <li>Configuration: </li>
+        <li>Test Assemblies: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll</li>
+        <li>Start Time: 3/4/2021 5:29:55 PM</li>
+        <li>Duration: 00:00:01.3102191</li>
+        <li>Test Threads: 1</li>
+    </ul>
+
+
+        <h2>Result: 3 failed</h2>
+        <table class="testEvents">
+                <tr>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+    </tr>
+
+                <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 28px;" 
+           title="3 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 170px;" 
+           title="18 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>21 (test executions: 25)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>18</td>
+
+        </table>
+        
+        <h2>Test Timeline Summary</h2>
+
+        <div id="timelineview" class="viewbox">
+            <div class="scrollable">
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th class="thread-label" colspan="2">thread</th>
+                    </tr>
+                        <tr class="thread-items-row">
+                            <td class="thread-label" title="Machine: DESKTOP-HN18009">#0</td>
+                            <td colspan="2">
+                                <table class="timelineview" cellpadding="0" cellspacing="0">
+                                    <tr>
+
+                                            <td>
+        <a
+            class="bar startupBar" 
+            style="width: 8px;" 
+                title="test thread startup" 
+        >&nbsp;</a>
+    </td>
+
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 158px;" 
+                title="Login to Buggy Cars Rating site with correct password (in Login)" 
+                href="#t-1239413637.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with correct password (in Login) retry #1" 
+                href="#t-1239413637.1"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with correct password (in Login) retry #2" 
+                href="#t-1239413637.2"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with wrong details (in Login)" 
+                href="#t1232851961.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with wrong details (in Login) retry #1" 
+                href="#t1232851961.1"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with wrong details (in Login) retry #2" 
+                href="#t1232851961.2"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Navigate back to homepage from Overall Rating (in NavLinks)" 
+                href="#t-1950380561.0"
+        >&nbsp;</a>
+    </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    <tr class="horizontal-scale">
+                        <td>&nbsp;</td>
+                            <td class="scale-10-label" style="width: 134px;min-width: 134px;">0s</td>
+                        <td class="scale-10-label">1s</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        
+    <h2>Test Result View</h2>
+    <div id="testview" class="viewbox">
+        <div id="bar-control">
+            <div id="bar-control-sort">
+                <label>sort by:</label>
+                <span class="option"><input type="radio" name="barSortOrder" value="exectime" />Time</span>
+                <span class="option"><input type="radio" name="barSortOrder" value="acttime" />Act Time</span>
+                <span class="option"><input type="radio" name="barSortOrder" value="order" />Execution</span>
+                <span class="option"><input type="radio" name="barSortOrder" value="rescode" checked="checked" />Result</span>
+                <span class="option"><input type="checkbox" name="barSortDesc" id="barSortDesc" checked="checked" />desc</span>
+            </div>
+            <div id="bar-control-heights">
+                <label>heights:</label>
+                <span class="option"><input type="radio" checked="checked" name="barHeight" value="exectime" />Time</span>
+                <span class="option"><input type="radio" name="barHeight" value="acttime" />Act Time</span>
+            </div>
+        </div>
+        <table class="vertical-scale" cellpadding="0" cellspacing="0">
+            <tr class="scale-max">
+                <td class="left-padding scale-max-label">&nbsp;</td>
+                <td colspan="25">&nbsp;</td>
+                <td class="right-padding">&nbsp;</td>
+            </tr>
+            <tr class="scale-mid">
+                <td class="left-padding scale-mid-label">&nbsp;</td>
+                <td colspan="25">&nbsp;</td>
+                <td class="right-padding">&nbsp;</td>
+            </tr>
+            <tr class="scale-min">
+                <td class="left-padding scale-min-label">&nbsp;</td>
+                <td colspan="25">&nbsp;</td>
+                <td class="right-padding">&nbsp;</td>
+            </tr>
+        </table>
+        <div class="scrollable">
+            <table class="testview-items" cellpadding="0" cellspacing="0">
+                <tr class="testview-items-row">
+                    <td class="left-padding">&nbsp;</td>
+    <td class="testview-item" 
+        data-sr-exectime="1.21E-05" data-sr-rescode="420" data-sr-order="7" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Navigate back to homepage from Popular Model (in NavLinks)"
+            href="#t518483837.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="8E-07" data-sr-rescode="420" data-sr-order="8" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Navigate back to homepage from Popular Make (in NavLinks)"
+            href="#t-44162908.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="9" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with correct details (in Register)"
+            href="#t-1682960080.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="10" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Username already taken (in Register)"
+            href="#t1066704782.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="11" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Minumum password (in Register)"
+            href="#t244080550.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="12" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Password no numeric (in Register)"
+            href="#t1891132730.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="13" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Password no lowercase (in Register)"
+            href="#t-509149218.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="14" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Password no uppercase (in Register)"
+            href="#t-421399829.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="15" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Password no symbol (in Register)"
+            href="#t-2103779097.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="6E-07" data-sr-rescode="420" data-sr-order="16" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Register with incorrect password - Password do not match (in Register)"
+            href="#t2095045589.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="17" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Update Profile with correct details (in Update Profile)"
+            href="#t486101386.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="18" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Update Profile with incorrect Age Range (in Update Profile)"
+            href="#t-696121423.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="6E-07" data-sr-rescode="420" data-sr-order="19" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Vote via Popular Model Link (in Vote)"
+            href="#t-271531586.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="8E-07" data-sr-rescode="420" data-sr-order="20" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Vote via Popular Make Link (in Vote)"
+            href="#t1406043329.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="21" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Vote via Overall Rating Link (in Vote)"
+            href="#t1834244136.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="22" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Unable to vote without logging in - From Popular Model (in Vote)"
+            href="#t927851039.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="6E-07" data-sr-rescode="420" data-sr-order="23" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Unable to vote without logging in - From Popular Make (in Vote)"
+            href="#t502242144.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="24" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Unable to vote without logging in - From Overall Rating (in Vote)"
+            href="#t155735297.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0903124" data-sr-rescode="540" data-sr-order="0" data-sr-acttime="0.001">
+        <a
+            class="bar colorFailed" 
+            style="height: 60px;"
+            title="Login to Buggy Cars Rating site with correct password (in Login)"
+            href="#t-1239413637.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0040921" data-sr-rescode="540" data-sr-order="1" data-sr-acttime="0">
+        <a
+            class="bar colorFailed" 
+            style="height: 3px;"
+            title="Login to Buggy Cars Rating site with correct password (in Login) retry #1"
+            href="#t-1239413637.1">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0088202" data-sr-rescode="540" data-sr-order="2" data-sr-acttime="0">
+        <a
+            class="bar colorFailed" 
+            style="height: 6px;"
+            title="Login to Buggy Cars Rating site with correct password (in Login) retry #2"
+            href="#t-1239413637.2">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0047246" data-sr-rescode="540" data-sr-order="3" data-sr-acttime="0">
+        <a
+            class="bar colorFailed" 
+            style="height: 3px;"
+            title="Login to Buggy Cars Rating site with wrong details (in Login)"
+            href="#t1232851961.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0034058" data-sr-rescode="540" data-sr-order="4" data-sr-acttime="0">
+        <a
+            class="bar colorFailed" 
+            style="height: 2px;"
+            title="Login to Buggy Cars Rating site with wrong details (in Login) retry #1"
+            href="#t1232851961.1">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0037667" data-sr-rescode="540" data-sr-order="5" data-sr-acttime="0">
+        <a
+            class="bar colorFailed" 
+            style="height: 3px;"
+            title="Login to Buggy Cars Rating site with wrong details (in Login) retry #2"
+            href="#t1232851961.2">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="0.0048046" data-sr-rescode="540" data-sr-order="6" data-sr-acttime="0.001">
+        <a
+            class="bar colorFailed" 
+            style="height: 3px;"
+            title="Navigate back to homepage from Overall Rating (in NavLinks)"
+            href="#t-1950380561.0">&nbsp;</a>
+    </td>
+                    <td class="right-padding">&nbsp;</td>
+                </tr>
+                <tr class="horizontal-scale">
+                    <td class="left-padding">&nbsp;</td>
+                    <td colspan="10">&nbsp;</td>
+                        <td class="scale-10-label" colspan="10">10</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+        
+        
+    <h2>Feature Summary</h2>
+    <table class="testEvents">
+            <tr>
+            <th>Feature</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+
+            <tr>
+                <td><a href="#f662132513">Login</a></td>
+                    <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="2 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>2 (test executions: 6)</td>
+    <td>0</td>
+    <td>6</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:00.1151218</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f-1475524986">NavLinks</a></td>
+                    <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 66px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 132px;" 
+           title="2 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>3</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>2</td>
+        <td>00:00:00.0048175</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f-648749121">Register</a></td>
+                    <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="8 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>8</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>8</td>
+        <td>00:00:00.0000055</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f878501452">Update Profile</a></td>
+                    <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="2 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>2</td>
+        <td>00:00:00.0000014</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f-1938854756">Vote</a></td>
+                    <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="6 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>6</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>6</td>
+        <td>00:00:00.0000041</td>
+
+            </tr>
+    </table>
+
+
+        <a name="error_summary" />
+        <h2>Error Summary</h2>
+        <table class="testEvents">
+                <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+    </tr>
+
+                <tr>
+                    <td>
+                        <a href="#t-1239413637.0">Login to Buggy Cars Rating site with correct password (in BuggyCars, Login)</a>
+                            <a href="#t-1239413637.1">retry #1</a>
+                            <a href="#t-1239413637.2">retry #2</a>
+                    </td>
+                        <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+
+                </tr>
+                <tr>
+                    <td colspan="9" style="padding-left: 20px;"><div class="errorMessage">Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#t1232851961.0">Login to Buggy Cars Rating site with wrong details (in BuggyCars, Login)</a>
+                            <a href="#t1232851961.1">retry #1</a>
+                            <a href="#t1232851961.2">retry #2</a>
+                    </td>
+                        <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+
+                </tr>
+                <tr>
+                    <td colspan="9" style="padding-left: 20px;"><div class="errorMessage">Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#t-1950380561.0">Navigate back to homepage from Overall Rating (in BuggyCars, NavLinks)</a>
+                    </td>
+                        <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+
+                </tr>
+                <tr>
+                    <td colspan="9" style="padding-left: 20px;"><div class="errorMessage">Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div></td>
+                </tr>
+        </table>
+
+        <h2>Scenario Summary</h2>
+            <a name="f662132513" />
+            <h3>Feature: Login</h3>
+                <div class="description"><pre>	Login to Buggy Cars Rating</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-1239413637.0">Scenario: Login to Buggy Cars Rating site with correct password</a>
+            <a href="#t-1239413637.1">retry #1</a>
+            <a href="#t-1239413637.2">retry #2</a>
+
+                        </td>
+                        
+                            <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:00.1032247</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1232851961.0">Scenario: Login to Buggy Cars Rating site with wrong details</a>
+            <a href="#t1232851961.1">retry #1</a>
+            <a href="#t1232851961.2">retry #2</a>
+
+                        </td>
+                        
+                            <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:00.0118971</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f-1475524986" />
+            <h3>Feature: NavLinks</h3>
+                <div class="description"><pre>	Verify if links are accessible</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-1950380561.0">Scenario: Navigate back to homepage from Overall Rating</a>
+
+                        </td>
+                        
+                            <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:00.0048046</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t518483837.0">Scenario: Navigate back to homepage from Popular Model</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000121</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-44162908.0">Scenario: Navigate back to homepage from Popular Make</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000008</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f-648749121" />
+            <h3>Feature: Register</h3>
+                <div class="description"><pre>	Register with Buggy Cars Rating</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-1682960080.0">Scenario: Register with correct details</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1066704782.0">Scenario: Register with incorrect password - Username already taken</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t244080550.0">Scenario: Register with incorrect password - Minumum password</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1891132730.0">Scenario: Register with incorrect password - Password no numeric</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-509149218.0">Scenario: Register with incorrect password - Password no lowercase</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-421399829.0">Scenario: Register with incorrect password - Password no uppercase</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-2103779097.0">Scenario: Register with incorrect password - Password no symbol</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t2095045589.0">Scenario: Register with incorrect password - Password do not match</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000006</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f878501452" />
+            <h3>Feature: Update Profile</h3>
+                <div class="description"><pre>		Update Profile details</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t486101386.0">Scenario: Update Profile with correct details</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-696121423.0">Scenario: Update Profile with incorrect Age Range</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f-1938854756" />
+            <h3>Feature: Vote</h3>
+                <div class="description"><pre>	Vote Cars Rating</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-271531586.0">Scenario: Vote via Popular Model Link</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000006</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1406043329.0">Scenario: Vote via Popular Make Link</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000008</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1834244136.0">Scenario: Vote via Overall Rating Link</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t927851039.0">Scenario: Unable to vote without logging in - From Popular Model</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t502242144.0">Scenario: Unable to vote without logging in - From Popular Make</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000006</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t155735297.0">Scenario: Unable to vote without logging in - From Overall Rating</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+            </table>
+
+        <h2>Execution Details</h2>
+            <a name="t-1239413637.0" />
+            <h3>Scenario: Login to Buggy Cars Rating site with correct password (in BuggyCars, Login)</h3>
+                <div class="description">
+                    tags: correctlogin
+                </div>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0903124</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.052s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password  |
+  | skyreign | Chasec20. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.002s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see my Profile link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.LoginFeature.ScenarioCleanup()
+   at BuggyCars.Features.LoginFeature.LoginToBuggyCarsRatingSiteWithCorrectPassword() in C:\BuggyCars\Features\Login.feature:line 10
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0.006s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.LoginFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0.003s</td>
+                    </tr>
+            </table>
+            <a name="t-1239413637.1" />
+            <h3>Scenario: Login to Buggy Cars Rating site with correct password (in BuggyCars, Login) retry #1</h3>
+                <div class="description">
+                    tags: correctlogin
+                </div>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0040921</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password  |
+  | skyreign | Chasec20. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see my Profile link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.LoginFeature.ScenarioCleanup()
+   at BuggyCars.Features.LoginFeature.LoginToBuggyCarsRatingSiteWithCorrectPassword() in C:\BuggyCars\Features\Login.feature:line 10
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.LoginFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0s</td>
+                    </tr>
+            </table>
+            <a name="t-1239413637.2" />
+            <h3>Scenario: Login to Buggy Cars Rating site with correct password (in BuggyCars, Login) retry #2</h3>
+                <div class="description">
+                    tags: correctlogin
+                </div>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0088202</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password  |
+  | skyreign | Chasec20. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.006s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see my Profile link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.LoginFeature.ScenarioCleanup()
+   at BuggyCars.Features.LoginFeature.LoginToBuggyCarsRatingSiteWithCorrectPassword() in C:\BuggyCars\Features\Login.feature:line 10
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.LoginFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0.001s</td>
+                    </tr>
+            </table>
+            <a name="t1232851961.0" />
+            <h3>Scenario: Login to Buggy Cars Rating site with wrong details (in BuggyCars, Login)</h3>
+                <div class="description">
+                    tags: incorrectlogin
+                </div>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0047246</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Initialization: Feature - Login] -->
+                            <pre class="log">warning: The previous FeatureContext was not disposed.</pre>
+                        </td>
+                        <td>Succeeded in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password |
+  | skyreign | 1234     |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then login failed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.LoginFeature.ScenarioCleanup()
+   at BuggyCars.Features.LoginFeature.LoginToBuggyCarsRatingSiteWithWrongDetails() in C:\BuggyCars\Features\Login.feature:line 19
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.LoginFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0s</td>
+                    </tr>
+            </table>
+            <a name="t1232851961.1" />
+            <h3>Scenario: Login to Buggy Cars Rating site with wrong details (in BuggyCars, Login) retry #1</h3>
+                <div class="description">
+                    tags: incorrectlogin
+                </div>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0034058</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password |
+  | skyreign | 1234     |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then login failed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.LoginFeature.ScenarioCleanup()
+   at BuggyCars.Features.LoginFeature.LoginToBuggyCarsRatingSiteWithWrongDetails() in C:\BuggyCars\Features\Login.feature:line 19
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.LoginFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0s</td>
+                    </tr>
+            </table>
+            <a name="t1232851961.2" />
+            <h3>Scenario: Login to Buggy Cars Rating site with wrong details (in BuggyCars, Login) retry #2</h3>
+                <div class="description">
+                    tags: incorrectlogin
+                </div>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0037667</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password |
+  | skyreign | 1234     |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then login failed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.LoginFeature.ScenarioCleanup()
+   at BuggyCars.Features.LoginFeature.LoginToBuggyCarsRatingSiteWithWrongDetails() in C:\BuggyCars\Features\Login.feature:line 19
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.LoginFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0s</td>
+                    </tr>
+            </table>
+            <a name="t-1950380561.0" />
+            <h3>Scenario: Navigate back to homepage from Overall Rating (in BuggyCars, NavLinks)</h3>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 0.0048046</li>
+                <li>Thread: #0</li>
+                <li>Error: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.002s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I Navigate to any pagename
+  --- table step argument ---
+  | PageName       |
+  | Overall Rating |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should be able to navigate back to my homepage</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                                <div class="errorMessage">The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html</div>
+                                <pre class="stackTrace">OpenQA.Selenium.DriverServiceNotFoundException: The file C:\BCars\chromedriver.exe does not exist. The driver can be downloaded at http://chromedriver.storage.googleapis.com/index.html
+   at OpenQA.Selenium.DriverService..ctor(String servicePath, Int32 port, String driverServiceExecutableName, Uri driverServiceDownloadUrl)
+   at OpenQA.Selenium.Chrome.ChromeDriverService..ctor(String executablePath, String executableFileName, Int32 port)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath, String driverExecutableFileName)
+   at OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(String driverPath)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options, TimeSpan commandTimeout)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory, ChromeOptions options)
+   at OpenQA.Selenium.Chrome.ChromeDriver..ctor(String chromeDriverDirectory)
+   at BCars.Hooks.Hooks.BeforeScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 19
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioStart() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 201
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.NavLinksFeature.ScenarioCleanup()
+   at BuggyCars.Features.NavLinksFeature.NavigateBackToHomepageFromOverallRating() in C:\BuggyCars\Features\NavLinks.feature:line 9
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log"></pre>
+                        </td>
+                        <td>
+                            <!-- [Cleanup: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log"></pre>
+                                <div class="errorMessage">Object reference not set to an instance of an object.</div>
+                                <pre class="stackTrace">System.NullReferenceException: Object reference not set to an instance of an object.
+   at BCars.Hooks.Hooks.AfterScenario() in C:\BuggyCars\Hooks\Hooks.cs:line 26
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireEvents(HookType hookType) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 375
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.FireScenarioEvents(HookType bindingEvent) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 339
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.FireScenarioEvents(HookType bindingEvent)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 277
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnScenarioEnd()
+   at TechTalk.SpecFlow.TestRunner.OnScenarioEnd() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 65
+   at BuggyCars.Features.NavLinksFeature.TestTearDown()
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0s</td>
+                    </tr>
+            </table>
+            <a name="t518483837.0" />
+            <h3>Scenario: Navigate back to homepage from Popular Model (in BuggyCars, NavLinks)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 1.21E-05</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-44162908.0" />
+            <h3>Scenario: Navigate back to homepage from Popular Make (in BuggyCars, NavLinks)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 8E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-1682960080.0" />
+            <h3>Scenario: Register with correct details (in BuggyCars, Register)</h3>
+                <div class="description">
+                    tags: registercorrectdetails
+                </div>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t1066704782.0" />
+            <h3>Scenario: Register with incorrect password - Username already taken (in BuggyCars, Register)</h3>
+                <div class="description">
+                    tags: registerusernameexist
+                </div>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t244080550.0" />
+            <h3>Scenario: Register with incorrect password - Minumum password (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t1891132730.0" />
+            <h3>Scenario: Register with incorrect password - Password no numeric (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-509149218.0" />
+            <h3>Scenario: Register with incorrect password - Password no lowercase (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-421399829.0" />
+            <h3>Scenario: Register with incorrect password - Password no uppercase (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-2103779097.0" />
+            <h3>Scenario: Register with incorrect password - Password no symbol (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t2095045589.0" />
+            <h3>Scenario: Register with incorrect password - Password do not match (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 6E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t486101386.0" />
+            <h3>Scenario: Update Profile with correct details (in BuggyCars, Update Profile)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-696121423.0" />
+            <h3>Scenario: Update Profile with incorrect Age Range (in BuggyCars, Update Profile)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t-271531586.0" />
+            <h3>Scenario: Vote via Popular Model Link (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 6E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t1406043329.0" />
+            <h3>Scenario: Vote via Popular Make Link (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 8E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t1834244136.0" />
+            <h3>Scenario: Vote via Overall Rating Link (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t927851039.0" />
+            <h3>Scenario: Unable to vote without logging in - From Popular Model (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t502242144.0" />
+            <h3>Scenario: Unable to vote without logging in - From Popular Make (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 6E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t155735297.0" />
+            <h3>Scenario: Unable to vote without logging in - From Overall Rating (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:29:56 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+	</body>
+</html>

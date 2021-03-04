@@ -1,0 +1,7 @@
+Download Instructions:
+1. Download ZIP file from GitHub
+2. Save to Drive C
+3. Extract folder to "C:\BuggyCars"
+4. Open the downloaded project/solution
+5. Build to install extensions
+6. Run All

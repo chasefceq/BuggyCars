@@ -1,0 +1,254 @@
+﻿2021-03-04T17:41:25.8081673+13:00;VSTestExecutionThread;Info;SpecFlow+Runner execution started
+2021-03-04T17:41:25.8082969+13:00;VSTestExecutionThread;Info;SpecFlow+Runner 3.7.3 in Framework netcore31 in x64 mode execution started
+2021-03-04T17:41:25.8082990+13:00;VSTestExecutionThread;Info;TestAdapter Location: C:\BuggyCars\bin\Debug\netcoreapp3.1\TechTalk.SpecRun.VisualStudio.TestAdapter.dll
+2021-03-04T17:41:25.8093112+13:00;VSTestExecutionThread;Info;Current UserName: 'Admin', MachineName: 'DESKTOP-HN18009'
+2021-03-04T17:41:25.8342168+13:00;VSTestExecutionThread;Info;SpecRun: running tests in C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:41:25.8343849+13:00;VSTestExecutionThread;Info;Output folder configured to "C:\BuggyCars\TestResults" (default)
+2021-03-04T17:41:25.8344180+13:00;VSTestExecutionThread;Info;Profile: 
+2021-03-04T17:41:25.8600683+13:00;VSTestExecutionThread;Info;Log file path: C:\BuggyCars\TestResults\Unnamed project__2021-03-04T174125.log
+2021-03-04T17:41:25.8628621+13:00;Thread#12;Info;Checking activation
+2021-03-04T17:41:25.9096867+13:00;Thread#12;Info;Activated.
+2021-03-04T17:41:25.9098374+13:00;Thread#12;Info;Activation check completed
+2021-03-04T17:41:25.9098743+13:00;Thread#12;Info;Starting test run
+2021-03-04T17:41:25.9526231+13:00;Thread#12;Info;Discovering target: Default
+2021-03-04T17:41:25.9527153+13:00;Thread#12;Info;Discovering tests from assembly: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:41:26.0027723+13:00;Thread#12;Info;Discovered tests from assembly: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:41:26.0034418+13:00:Test Suite Dump
+2021-03-04T17:41:26.0043576+13:00:#0: Unnamed project/ - 
+2021-03-04T17:41:26.0043670+13:00:#1: Default - 
+2021-03-04T17:41:26.0043680+13:00:#2: BuggyCars - 
+2021-03-04T17:41:26.0043689+13:00:#17: Vote - 
+2021-03-04T17:41:26.0049862+13:00:#22: Unable to vote without logging in - From Overall Rating - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Overall+Rating
+2021-03-04T17:41:26.0050176+13:00:End: Test Suite Dump
+2021-03-04T17:41:26.0151666+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:41:26.0163598+13:00:Thread#:Scheduler: testitem #22 from normal test queue 
+2021-03-04T17:41:26.0163967+13:00:Thread#0:Scheduler: considering testitem #22 for thread 0
+2021-03-04T17:41:26.0182728+13:00:Thread#0:TestItem#22:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:41:26.0182781+13:00:Thread#0:TestItem#22:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:41:26.0182793+13:00:Thread#0:TestItem#22:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:41:26.0182826+13:00:Thread#0:Scheduler: using testitem #22 for thread 0
+2021-03-04T17:41:26.0187129+13:00:Thread#0:Scheduler: Test #22 is scheduled for thread
+2021-03-04T17:41:26.0194559+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:41:26.0208045+13:00:Thread #0: creating new test thread executor for BuggyCars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (target: Default)
+2021-03-04T17:41:26.0224290+13:00:Thread #0: Creating test assembly executor for execution model OutProc
+2021-03-04T17:41:26.0225447+13:00:Thread #0: Creating test assembly executor for execution model OutProc
+2021-03-04T17:41:26.0391146+13:00:Thread #0: using TechTalk.SpecRun.Framework.Execution.OutOfProc.StreamJsonRPC.OutOfProcessTestAssemblyExecutorHost to execute tests
+2021-03-04T17:41:26.0401734+13:00:starting Out Of Process Executor
+2021-03-04T17:41:26.0673580+13:00:Assembly resolving Microsoft.VisualStudio.Validation, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:41:26.0689592+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' from .deps.json file
+2021-03-04T17:41:26.0689653+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Validation' from .deps.json
+2021-03-04T17:41:26.0696595+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:26.0698980+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll'
+2021-03-04T17:41:26.0699408+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Validation.exe'
+2021-03-04T17:41:26.0699627+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:26.0700839+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:41:26.0704243+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:41:26.0704298+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:41:26.0704307+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll'
+2021-03-04T17:41:26.0704758+13:00:[AssemblyCache] Found file 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll' for assembly 'Microsoft.VisualStudio.Validation'
+2021-03-04T17:41:26.0707408+13:00:[AssemblyCache] Resolved 'Microsoft.VisualStudio.Validation' to C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll
+2021-03-04T17:41:26.0711215+13:00:Starting callback TCP Rpc server
+2021-03-04T17:41:26.0815445+13:00:Asynchronously starting background TCP Rpc Server on port 32768
+2021-03-04T17:41:26.0815708+13:00:Started callback TCP Rpc server on port 32768
+2021-03-04T17:41:26.0815722+13:00:Starting logger TCP Rpc server
+2021-03-04T17:41:26.0834407+13:00:Asynchronously starting background TCP Rpc Server on port 32769
+2021-03-04T17:41:26.0834501+13:00:Started logger TCP Rpc server on port 32769
+2021-03-04T17:41:26.1689223+13:00:Executing test executor at 'dotnet' 'exec "C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\TechTalk.SpecRun.Framework.Executor.anycpu.netcoreapp3_1.dll" --remoteRunnerPid 17920 --uniqueId "2021-03-04T174125" --outputFolder "C:\BuggyCars\TestResults" --callbackPort 32768 --loggerPort 32769' in 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:26.1740518+13:00:Executor with PID 14184 has been started successfully.
+2021-03-04T17:41:26.1762196+13:00:Out of Process Executor 14184 started
+2021-03-04T17:41:26.1762286+13:00:Waiting for endpoint
+2021-03-04T17:41:26.4808196+13:00:Assembly resolving Microsoft.VisualStudio.Threading, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:41:26.4808308+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' from .deps.json file
+2021-03-04T17:41:26.4808363+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Threading' from .deps.json
+2021-03-04T17:41:26.4808378+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:26.4808387+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll'
+2021-03-04T17:41:26.4808587+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Threading.exe'
+2021-03-04T17:41:26.4808761+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:26.4808775+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:41:26.4808948+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:41:26.4808971+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:41:26.4809036+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll'
+2021-03-04T17:41:26.4809390+13:00:[AssemblyCache] Found file 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll' for assembly 'Microsoft.VisualStudio.Threading'
+2021-03-04T17:41:26.4812583+13:00:[AssemblyCache] Resolved 'Microsoft.VisualStudio.Threading' to C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll
+2021-03-04T17:41:26.6053887+13:00:Remote executor port received: 32770
+2021-03-04T17:41:26.6055900+13:00:Creating executor TCP client on port 32770
+2021-03-04T17:41:26.6058229+13:00:Created executor TCP client on port 32770
+2021-03-04T17:41:26.6058265+13:00:Connecting to remote executor TCP server
+2021-03-04T17:41:26.6063357+13:00:Connected remote executor TCP server
+2021-03-04T17:41:26.6064171+13:00:trying to connect to Out of Process Executor the 1 attempt
+2021-03-04T17:41:26.6064218+13:00:Connection to Out of Process Executor established in the 1 attempt
+2021-03-04T17:41:26.7045006+13:00:2021-03-04T17:41:26.7038419+13:00:OutOfProcessTestAssemblyExecutor: initialized for C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll on test thread #0
+2021-03-04T17:41:26.7069596+13:00:Endpoint 14184 started
+2021-03-04T17:41:26.7184656+13:00:2021-03-04T17:41:26.7182538+13:00:OutOfProcessTestAssemblyExecutor: running tests...
+2021-03-04T17:41:26.7873238+13:00:2021-03-04T17:41:26.7871061+13:00:Assembly resolving TechTalk.SpecFlow, Version=3.7.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41
+2021-03-04T17:41:26.7890538+13:00:2021-03-04T17:41:26.7889567+13:00:[AssemblyCache] Trying to resolve 'TechTalk.SpecFlow' from .deps.json file
+2021-03-04T17:41:26.7910466+13:00:2021-03-04T17:41:26.7908794+13:00:[AssemblyCache] Resolved 'TechTalk.SpecFlow' to 'C:\Users\Admin\.nuget\packages\specflow\3.7.13\lib\netstandard2.0\TechTalk.SpecFlow.dll'
+2021-03-04T17:41:26.8545098+13:00:2021-03-04T17:41:26.8542677+13:00:Thread#0:T:-> Loading plugin C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:41:26.8550920+13:00:2021-03-04T17:41:26.8549995+13:00:Assembly resolving Microsoft.Extensions.DependencyModel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2021-03-04T17:41:26.8552349+13:00:2021-03-04T17:41:26.8551708+13:00:[AssemblyCache] Trying to resolve 'Microsoft.Extensions.DependencyModel' from .deps.json file
+2021-03-04T17:41:26.8556377+13:00:2021-03-04T17:41:26.8553877+13:00:[AssemblyCache] Resolved 'Microsoft.Extensions.DependencyModel' to 'C:\Users\Admin\.nuget\packages\microsoft.extensions.dependencymodel\1.0.3\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll'
+2021-03-04T17:41:26.8799091+13:00:2021-03-04T17:41:26.8796684+13:00:Assembly resolving Microsoft.DotNet.PlatformAbstractions, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2021-03-04T17:41:26.8800949+13:00:2021-03-04T17:41:26.8800241+13:00:[AssemblyCache] Trying to resolve 'Microsoft.DotNet.PlatformAbstractions' from .deps.json file
+2021-03-04T17:41:26.8803025+13:00:2021-03-04T17:41:26.8802340+13:00:[AssemblyCache] Resolved 'Microsoft.DotNet.PlatformAbstractions' to 'C:\Users\Admin\.nuget\packages\microsoft.dotnet.platformabstractions\1.0.3\lib\netstandard1.3\Microsoft.DotNet.PlatformAbstractions.dll'
+2021-03-04T17:41:26.8848222+13:00:2021-03-04T17:41:26.8846451+13:00:Thread#0:T:-> Missing [assembly:RuntimePlugin] attribute in BuggyCars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null. Please check https://go.specflow.org/doc-plugins for details.
+2021-03-04T17:41:26.8850573+13:00:2021-03-04T17:41:26.8849667+13:00:Thread#0:T:-> Loading plugin C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecRun.Runtime.SpecFlowPlugin.dll
+2021-03-04T17:41:26.9045702+13:00:2021-03-04T17:41:26.9043273+13:00:Thread#0:T:-> Using default config
+2021-03-04T17:41:26.9107936+13:00:2021-03-04T17:41:26.9106140+13:00:Assembly resolving Cucumber.Messages, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b10c5988214f940c
+2021-03-04T17:41:26.9109613+13:00:2021-03-04T17:41:26.9108941+13:00:[AssemblyCache] Trying to resolve 'Cucumber.Messages' from .deps.json file
+2021-03-04T17:41:26.9112223+13:00:2021-03-04T17:41:26.9111374+13:00:[AssemblyCache] Resolved 'Cucumber.Messages' to 'C:\Users\Admin\.nuget\packages\cucumber.messages\6.0.1\lib\netstandard2.0\Cucumber.Messages.dll'
+2021-03-04T17:41:26.9119040+13:00:2021-03-04T17:41:26.9118232+13:00:Assembly resolving Google.Protobuf, Version=3.7.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604
+2021-03-04T17:41:26.9120655+13:00:2021-03-04T17:41:26.9119771+13:00:[AssemblyCache] Trying to resolve 'Google.Protobuf' from .deps.json file
+2021-03-04T17:41:26.9122739+13:00:2021-03-04T17:41:26.9121934+13:00:[AssemblyCache] Resolved 'Google.Protobuf' to 'C:\Users\Admin\.nuget\packages\google.protobuf\3.7.0\lib\netstandard1.0\Google.Protobuf.dll'
+2021-03-04T17:41:26.9378669+13:00:2021-03-04T17:41:26.9376376+13:00:Assembly resolving Utf8Json, Version=1.3.7.0, Culture=neutral, PublicKeyToken=8a73d3ba7e392e27
+2021-03-04T17:41:26.9380443+13:00:2021-03-04T17:41:26.9379756+13:00:[AssemblyCache] Trying to resolve 'Utf8Json' from .deps.json file
+2021-03-04T17:41:26.9382623+13:00:2021-03-04T17:41:26.9381831+13:00:[AssemblyCache] Resolved 'Utf8Json' to 'C:\Users\Admin\.nuget\packages\utf8json\1.3.7\lib\netstandard2.0\Utf8Json.dll'
+2021-03-04T17:41:27.0473879+13:00:Thread#0: Test #22/0 is started on thread #0
+2021-03-04T17:41:27.0631761+13:00:2021-03-04T17:41:27.0629193+13:00:Assembly resolving WebDriver, Version=3.141.0.0, Culture=neutral, PublicKeyToken=null
+2021-03-04T17:41:27.0633807+13:00:2021-03-04T17:41:27.0632943+13:00:[AssemblyCache] Trying to resolve 'WebDriver' from .deps.json file
+2021-03-04T17:41:27.0636623+13:00:2021-03-04T17:41:27.0635804+13:00:[AssemblyCache] Resolved 'WebDriver' to 'C:\Users\Admin\.nuget\packages\selenium.webdriver\3.141.0\lib\netstandard2.0\WebDriver.dll'
+2021-03-04T17:41:29.4182532+13:00:2021-03-04T17:41:29.4171989+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:41:29.4255148+13:00:2021-03-04T17:41:29.4247913+13:00:Assembly resolving nunit.framework, Version=3.13.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
+2021-03-04T17:41:29.4263311+13:00:2021-03-04T17:41:29.4259215+13:00:[AssemblyCache] Trying to resolve 'nunit.framework' from .deps.json file
+2021-03-04T17:41:29.4271829+13:00:2021-03-04T17:41:29.4268002+13:00:[AssemblyCache] Resolved 'nunit.framework' to 'C:\Users\Admin\.nuget\packages\nunit\3.13.1\lib\netstandard2.0\nunit.framework.dll'
+2021-03-04T17:41:29.4442608+13:00:2021-03-04T17:41:29.4436151+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:41:29.4491684+13:00:2021-03-04T17:41:29.4485598+13:00:Thread#0:B:When I select the model and try to vote
+2021-03-04T17:41:29.4497621+13:00:2021-03-04T17:41:29.4494576+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:41:29.4502148+13:00:2021-03-04T17:41:29.4499798+13:00:Thread#0:B:  | VotingType     |
+2021-03-04T17:41:29.4506366+13:00:2021-03-04T17:41:29.4503872+13:00:Thread#0:B:  | Overall Rating |
+2021-03-04T17:41:32.5402144+13:00:2021-03-04T17:41:32.5393911+13:00:Assembly resolving System.Net.Requests.resources, Version=4.1.2.0, Culture=en-US, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:41:32.5407523+13:00:2021-03-04T17:41:32.5406480+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' from .deps.json file
+2021-03-04T17:41:32.5409160+13:00:2021-03-04T17:41:32.5408303+13:00:[AssemblyCache] Could not resolve 'System.Net.Requests.resources' from .deps.json
+2021-03-04T17:41:32.5419851+13:00:2021-03-04T17:41:32.5418894+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:32.5495579+13:00:2021-03-04T17:41:32.5492946+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\System.Net.Requests.resources.dll'
+2021-03-04T17:41:32.5498362+13:00:2021-03-04T17:41:32.5497649+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\System.Net.Requests.resources.exe'
+2021-03-04T17:41:32.5500225+13:00:2021-03-04T17:41:32.5499452+13:00:[AssemblyCache] Could not resolve 'System.Net.Requests.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:32.5503400+13:00:2021-03-04T17:41:32.5502485+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:41:32.5507084+13:00:2021-03-04T17:41:32.5506356+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:41:32.5508716+13:00:2021-03-04T17:41:32.5507870+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:41:32.5510163+13:00:2021-03-04T17:41:32.5509392+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\System.Net.Requests.resources.dll'
+2021-03-04T17:41:32.5511822+13:00:2021-03-04T17:41:32.5511100+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\System.Net.Requests.resources.exe'
+2021-03-04T17:41:32.5513305+13:00:2021-03-04T17:41:32.5512604+13:00:[AssemblyCache] Could not resolve 'System.Net.Requests.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:41:32.5564488+13:00:2021-03-04T17:41:32.5561742+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12'
+2021-03-04T17:41:32.5566581+13:00:2021-03-04T17:41:32.5565728+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12\System.Net.Requests.resources.dll'
+2021-03-04T17:41:32.5568994+13:00:2021-03-04T17:41:32.5568072+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12\System.Net.Requests.resources.exe'
+2021-03-04T17:41:32.5571046+13:00:2021-03-04T17:41:32.5570104+13:00:[AssemblyCache] Could not resolve 'System.Net.Requests.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12'
+2021-03-04T17:41:32.5573811+13:00:2021-03-04T17:41:32.5572907+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12'
+2021-03-04T17:41:32.5575269+13:00:2021-03-04T17:41:32.5574521+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12\System.Net.Requests.resources.dll'
+2021-03-04T17:41:32.5577240+13:00:2021-03-04T17:41:32.5576480+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12\System.Net.Requests.resources.exe'
+2021-03-04T17:41:32.5578828+13:00:2021-03-04T17:41:32.5578131+13:00:[AssemblyCache] Could not resolve 'System.Net.Requests.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12'
+2021-03-04T17:41:32.5581187+13:00:2021-03-04T17:41:32.5580361+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12'
+2021-03-04T17:41:32.5582628+13:00:2021-03-04T17:41:32.5581816+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12\System.Net.Requests.resources.dll'
+2021-03-04T17:41:32.5584465+13:00:2021-03-04T17:41:32.5583601+13:00:[AssemblyCache] Trying to resolve 'System.Net.Requests.resources' to 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12\System.Net.Requests.resources.exe'
+2021-03-04T17:41:32.5586038+13:00:2021-03-04T17:41:32.5585334+13:00:[AssemblyCache] Could not resolve 'System.Net.Requests.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12'
+2021-03-04T17:41:32.5598912+13:00:2021-03-04T17:41:32.5598096+13:00:Assembly resolving System.Net.Requests.resources, Version=4.1.2.0, Culture=en, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:41:32.5809902+13:00:2021-03-04T17:41:32.5806409+13:00:Thread#0:T:error: no such element: Unable to locate element: {"method":"link text","selector":"Veneno"}
+2021-03-04T17:41:32.5811848+13:00:2021-03-04T17:41:32.5811121+13:00:Thread#0:T:  (Session info: chrome=88.0.4324.190) (3.1s)
+2021-03-04T17:41:32.5818097+13:00:2021-03-04T17:41:32.5817029+13:00:Thread#0:B:Then I can see the message prompting me to login to vote
+2021-03-04T17:41:32.5824504+13:00:2021-03-04T17:41:32.5823574+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:41:32.5925690+13:00:Thread#0:TestItem#22:Scheduler: reschedule tests for testitem #22
+2021-03-04T17:41:32.5935989+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:41:32.5936258+13:00:Thread#:Scheduler: dequeuing a rescheduled testitem: #22
+2021-03-04T17:41:32.5936283+13:00:Thread#0:Scheduler: considering testitem #22 for thread 0
+2021-03-04T17:41:32.5936748+13:00:Thread#0:TestItem#22:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:41:32.5936783+13:00:Thread#0:TestItem#22:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:41:32.5936794+13:00:Thread#0:TestItem#22:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:41:32.5936805+13:00:Thread#0:Scheduler: using testitem #22 for thread 0
+2021-03-04T17:41:32.5936992+13:00:Thread#0:Scheduler: Test #22 is scheduled for thread
+2021-03-04T17:41:32.5937199+13:00:Thread#0:Scheduler: with testItemExecutionIndex 1
+2021-03-04T17:41:32.8235084+13:00:Thread#0: Test #22/0 is finished on thread #0 as Failed within 5.775487 seconds
+2021-03-04T17:41:32.8253273+13:00:Thread#0: Test #22/1 is started on thread #0
+2021-03-04T17:41:34.9414190+13:00:2021-03-04T17:41:34.9406812+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:41:34.9478419+13:00:2021-03-04T17:41:34.9469986+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:41:34.9538074+13:00:2021-03-04T17:41:34.9485307+13:00:Thread#0:B:When I select the model and try to vote
+2021-03-04T17:41:34.9667215+13:00:2021-03-04T17:41:34.9541254+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:41:34.9693667+13:00:2021-03-04T17:41:34.9670759+13:00:Thread#0:B:  | VotingType     |
+2021-03-04T17:41:34.9696273+13:00:2021-03-04T17:41:34.9695296+13:00:Thread#0:B:  | Overall Rating |
+2021-03-04T17:41:38.0497424+13:00:2021-03-04T17:41:38.0480599+13:00:Thread#0:T:error: no such element: Unable to locate element: {"method":"link text","selector":"Veneno"}
+2021-03-04T17:41:38.0510115+13:00:2021-03-04T17:41:38.0501612+13:00:Thread#0:T:  (Session info: chrome=88.0.4324.190) (3.1s)
+2021-03-04T17:41:38.0518763+13:00:2021-03-04T17:41:38.0515016+13:00:Thread#0:B:Then I can see the message prompting me to login to vote
+2021-03-04T17:41:38.0532041+13:00:2021-03-04T17:41:38.0524882+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:41:38.0592121+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:41:38.0592532+13:00:Thread#:Scheduler: dequeuing a rescheduled testitem: #22
+2021-03-04T17:41:38.0592560+13:00:Thread#0:Scheduler: considering testitem #22 for thread 0
+2021-03-04T17:41:38.0593109+13:00:Thread#0:TestItem#22:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:41:38.0593132+13:00:Thread#0:TestItem#22:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:41:38.0593142+13:00:Thread#0:TestItem#22:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:41:38.0593151+13:00:Thread#0:Scheduler: using testitem #22 for thread 0
+2021-03-04T17:41:38.0593434+13:00:Thread#0:Scheduler: Test #22 is scheduled for thread
+2021-03-04T17:41:38.0593623+13:00:Thread#0:Scheduler: with testItemExecutionIndex 2
+2021-03-04T17:41:38.2092864+13:00:Thread#0: Test #22/1 is finished on thread #0 as Failed within 5.3838791 seconds
+2021-03-04T17:41:38.2096867+13:00:Thread#0: Test #22/2 is started on thread #0
+2021-03-04T17:41:40.3404388+13:00:2021-03-04T17:41:40.3392978+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:41:40.3473117+13:00:2021-03-04T17:41:40.3454745+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:41:40.3513749+13:00:2021-03-04T17:41:40.3477136+13:00:Thread#0:B:When I select the model and try to vote
+2021-03-04T17:41:40.3590723+13:00:2021-03-04T17:41:40.3516101+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:41:40.3666736+13:00:2021-03-04T17:41:40.3593363+13:00:Thread#0:B:  | VotingType     |
+2021-03-04T17:41:40.3831931+13:00:2021-03-04T17:41:40.3668919+13:00:Thread#0:B:  | Overall Rating |
+2021-03-04T17:41:43.4769004+13:00:2021-03-04T17:41:43.4759598+13:00:Thread#0:T:error: no such element: Unable to locate element: {"method":"link text","selector":"Veneno"}
+2021-03-04T17:41:43.4986016+13:00:2021-03-04T17:41:43.4772007+13:00:Thread#0:T:  (Session info: chrome=88.0.4324.190) (3.1s)
+2021-03-04T17:41:43.4990747+13:00:2021-03-04T17:41:43.4989591+13:00:Thread#0:B:Then I can see the message prompting me to login to vote
+2021-03-04T17:41:43.4993574+13:00:2021-03-04T17:41:43.4992974+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:41:43.5002922+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:41:43.5003107+13:00:Thread#:Scheduler: at the end of normal test queue
+2021-03-04T17:41:43.5003139+13:00:Thread#0:Scheduler: enumerator for thread is at end
+2021-03-04T17:41:43.5003163+13:00:Thread#0:Scheduler: No more tests for thread
+2021-03-04T17:41:43.6429752+13:00:Thread#0: Test #22/2 is finished on thread #0 as Failed within 5.4332064 seconds
+2021-03-04T17:41:43.6480481+13:00:2021-03-04T17:41:43.6479244+13:00:Got Deinitialize Signal
+2021-03-04T17:41:43.6499047+13:00:RPC Client disconnected, because 'Disposed'. 
+LastMessage: 
+Description:Stream has been disposed
+Exception:<none>
+2021-03-04T17:41:43.6503355+13:00:RPC Server disconnected, because 'Disposed'. 
+LastMessage: 
+Description:Reached end of stream.
+Exception:<none>
+2021-03-04T17:41:43.6509662+13:00:RPC Server disconnected, because 'Disposed'. 
+LastMessage: 
+Description:Reached end of stream.
+Exception:<none>
+2021-03-04T17:41:43.6521726+13:00:Assembly resolving System.Diagnostics.Process.resources, Version=4.2.2.0, Culture=en-US, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:41:43.6521806+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' from .deps.json file
+2021-03-04T17:41:43.6521836+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' from .deps.json
+2021-03-04T17:41:43.6521871+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:43.6521879+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:41:43.6522155+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:41:43.6522335+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:41:43.6522373+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:41:43.6522779+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:41:43.6522802+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:41:43.6522808+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:41:43.6523118+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:41:43.6523313+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:41:43.6561205+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12'
+2021-03-04T17:41:43.6561243+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:41:43.6561682+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:41:43.6561895+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12'
+2021-03-04T17:41:43.6562937+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12'
+2021-03-04T17:41:43.6563064+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:41:43.6563403+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:41:43.6563645+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12'
+2021-03-04T17:41:43.6564531+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12'
+2021-03-04T17:41:43.6564563+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:41:43.6565014+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:41:43.6565296+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12'
+2021-03-04T17:41:43.6572642+13:00:Assembly resolving System.Diagnostics.Process.resources, Version=4.2.2.0, Culture=en, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:41:43.6626056+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:41:43.6626288+13:00:Thread#:Scheduler: at the end of normal test queue
+2021-03-04T17:41:43.6626300+13:00:Thread#-1:Scheduler: enumerator for thread is at end
+2021-03-04T17:41:43.6657456+13:00;Thread#12;Info;test run finished
+2021-03-04T17:41:43.6659161+13:00;Thread#12;Info;publishing test results
+2021-03-04T17:41:43.6659851+13:00;Thread#12;Info;Not publishing results.
+2021-03-04T17:41:43.6660202+13:00;Thread#12;Info;test results published
+2021-03-04T17:41:43.6660365+13:00;Thread#12;Info;generating reports
+2021-03-04T17:41:43.7157475+13:00;Thread#12;Info;Starting external report generation process
+2021-03-04T17:41:44.8772922+13:00;Thread#12;Info;Successfully generated reports.
+2021-03-04T17:41:44.8785003+13:00;Thread#12;Info;Successfully generated reports
+2021-03-04T17:41:44.8826118+13:00:Total: 1 (test executions: 3)
+2021-03-04T17:41:44.8836544+13:00:Succeeded: 0
+2021-03-04T17:41:44.8838259+13:00:Ignored: 0
+2021-03-04T17:41:44.8839748+13:00:Pending: 0
+2021-03-04T17:41:44.8839777+13:00:Skipped: 0
+2021-03-04T17:41:44.8841236+13:00:Failed: 1
+2021-03-04T17:41:44.8873466+13:00;VSTestExecutionThread;Info;Adding attachments to VSTest
+2021-03-04T17:41:44.8873748+13:00;VSTestExecutionThread;Info;adding Test Execution Report 'C:\BuggyCars\TestResults\Unnamed project__2021-03-04T174125.html'
+========== End of log file ==========

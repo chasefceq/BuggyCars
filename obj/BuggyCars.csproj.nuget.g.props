@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Admin\.nuget\packages\</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.8.1</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="$([MSBuild]::EnsureTrailingSlash($(NuGetPackageFolders)))" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <None Include="$(NuGetPackageRoot)specrun.specflow.3-7-0\3.7.3\contentFiles\any\any\SpecRunTestProfile.xsd" Condition="Exists('$(NuGetPackageRoot)specrun.specflow.3-7-0\3.7.3\contentFiles\any\any\SpecRunTestProfile.xsd')">
+      <NuGetPackageId>SpecRun.SpecFlow.3-7-0</NuGetPackageId>
+      <NuGetPackageVersion>3.7.3</NuGetPackageVersion>
+      <NuGetItemType>None</NuGetItemType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>SpecRunTestProfile.xsd</TargetPath>
+      <Private>True</Private>
+      <Link>SpecRunTestProfile.xsd</Link>
+    </None>
+    <None Include="$(NuGetPackageRoot)specrun.specflow.3-7-0\3.7.3\contentFiles\any\any\SpecRunTestProfile_2011_09.xsd" Condition="Exists('$(NuGetPackageRoot)specrun.specflow.3-7-0\3.7.3\contentFiles\any\any\SpecRunTestProfile_2011_09.xsd')">
+      <NuGetPackageId>SpecRun.SpecFlow.3-7-0</NuGetPackageId>
+      <NuGetPackageVersion>3.7.3</NuGetPackageVersion>
+      <NuGetItemType>None</NuGetItemType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>SpecRunTestProfile_2011_09.xsd</TargetPath>
+      <Private>True</Private>
+      <Link>SpecRunTestProfile_2011_09.xsd</Link>
+    </None>
+  </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.net.test.sdk\15.0.0\build\netcoreapp1.0\Microsoft.Net.Test.Sdk.props" Condition="Exists('$(NuGetPackageRoot)microsoft.net.test.sdk\15.0.0\build\netcoreapp1.0\Microsoft.Net.Test.Sdk.props')" />
+    <Import Project="$(NuGetPackageRoot)specrun.runner\3.7.3\build\SpecRun.Runner.props" Condition="Exists('$(NuGetPackageRoot)specrun.runner\3.7.3\build\SpecRun.Runner.props')" />
+    <Import Project="$(NuGetPackageRoot)specflow.tools.msbuild.generation\3.7.13\build\SpecFlow.Tools.MsBuild.Generation.props" Condition="Exists('$(NuGetPackageRoot)specflow.tools.msbuild.generation\3.7.13\build\SpecFlow.Tools.MsBuild.Generation.props')" />
+    <Import Project="$(NuGetPackageRoot)specrun.specflow.3-7-0\3.7.3\build\SpecRun.SpecFlow.3-7-0.props" Condition="Exists('$(NuGetPackageRoot)specrun.specflow.3-7-0\3.7.3\build\SpecRun.SpecFlow.3-7-0.props')" />
+    <Import Project="$(NuGetPackageRoot)nunit3testadapter\3.17.0\build\netcoreapp2.1\NUnit3TestAdapter.props" Condition="Exists('$(NuGetPackageRoot)nunit3testadapter\3.17.0\build\netcoreapp2.1\NUnit3TestAdapter.props')" />
+    <Import Project="$(NuGetPackageRoot)nunit\3.13.1\build\NUnit.props" Condition="Exists('$(NuGetPackageRoot)nunit\3.13.1\build\NUnit.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\Admin\.nuget\packages\newtonsoft.json\10.0.3</PkgNewtonsoft_Json>
+    <PkgSpecRun_Runner Condition=" '$(PkgSpecRun_Runner)' == '' ">C:\Users\Admin\.nuget\packages\specrun.runner\3.7.3</PkgSpecRun_Runner>
+    <PkgBoDi Condition=" '$(PkgBoDi)' == '' ">C:\Users\Admin\.nuget\packages\bodi\1.5.0</PkgBoDi>
+  </PropertyGroup>
+</Project>

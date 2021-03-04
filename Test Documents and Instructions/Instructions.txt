@@ -1,0 +1,13 @@
+Download Instructions:
+1. Go to GitHub repository
+--->
+2. Download ZIP file
+3. Save to C Drive "C:/"
+4. Extract folder
+####################################
+Setup Information/Pre-requisites:
+1. Download and install Microsoft Visual Studio 2019 
+--->https://visualstudio.microsoft.com/downloads/
+2. Open the downloaded project/solution
+3. Build to install extensions
+4. 

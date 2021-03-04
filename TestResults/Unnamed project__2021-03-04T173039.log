@@ -1,0 +1,225 @@
+﻿2021-03-04T17:30:39.2487571+13:00;VSTestExecutionThread;Info;SpecFlow+Runner execution started
+2021-03-04T17:30:39.2488517+13:00;VSTestExecutionThread;Info;SpecFlow+Runner 3.7.3 in Framework netcore31 in x64 mode execution started
+2021-03-04T17:30:39.2488534+13:00;VSTestExecutionThread;Info;TestAdapter Location: C:\BuggyCars\bin\Debug\netcoreapp3.1\TechTalk.SpecRun.VisualStudio.TestAdapter.dll
+2021-03-04T17:30:39.2498534+13:00;VSTestExecutionThread;Info;Current UserName: 'Admin', MachineName: 'DESKTOP-HN18009'
+2021-03-04T17:30:39.2730152+13:00;VSTestExecutionThread;Info;SpecRun: running tests in C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:30:39.2731632+13:00;VSTestExecutionThread;Info;Output folder configured to "C:\BuggyCars\TestResults" (default)
+2021-03-04T17:30:39.2731955+13:00;VSTestExecutionThread;Info;Profile: 
+2021-03-04T17:30:39.2968540+13:00;VSTestExecutionThread;Info;Log file path: C:\BuggyCars\TestResults\Unnamed project__2021-03-04T173039.log
+2021-03-04T17:30:39.2995644+13:00;Thread#12;Info;Checking activation
+2021-03-04T17:30:39.3460728+13:00;Thread#12;Info;Activated.
+2021-03-04T17:30:39.3462180+13:00;Thread#12;Info;Activation check completed
+2021-03-04T17:30:39.3462559+13:00;Thread#12;Info;Starting test run
+2021-03-04T17:30:39.3889837+13:00;Thread#12;Info;Discovering target: Default
+2021-03-04T17:30:39.3890782+13:00;Thread#12;Info;Discovering tests from assembly: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:30:39.4365076+13:00;Thread#12;Info;Discovered tests from assembly: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:30:39.4371453+13:00:Test Suite Dump
+2021-03-04T17:30:39.4380410+13:00:#0: Unnamed project/ - 
+2021-03-04T17:30:39.4380509+13:00:#1: Default - 
+2021-03-04T17:30:39.4380519+13:00:#2: BuggyCars - 
+2021-03-04T17:30:39.4380533+13:00:#3: Login - 
+2021-03-04T17:30:39.4380541+13:00:#6: NavLinks - 
+2021-03-04T17:30:39.4380550+13:00:#10: Register - 
+2021-03-04T17:30:39.4380561+13:00:#19: Update Profile - 
+2021-03-04T17:30:39.4380569+13:00:#22: Vote - 
+2021-03-04T17:30:39.4386866+13:00:#4: Login to Buggy Cars Rating site with correct password - TestAssembly:BuggyCars/Feature:Login/Scenario:Login+to+Buggy+Cars+Rating+site+with+correct+password
+2021-03-04T17:30:39.4387045+13:00:#5: Login to Buggy Cars Rating site with wrong details - TestAssembly:BuggyCars/Feature:Login/Scenario:Login+to+Buggy+Cars+Rating+site+with+wrong+details
+2021-03-04T17:30:39.4387124+13:00:#7: Navigate back to homepage from Overall Rating - TestAssembly:BuggyCars/Feature:NavLinks/Scenario:Navigate+back+to+homepage+from+Overall+Rating
+2021-03-04T17:30:39.4387165+13:00:#8: Navigate back to homepage from Popular Model - TestAssembly:BuggyCars/Feature:NavLinks/Scenario:Navigate+back+to+homepage+from+Popular+Model
+2021-03-04T17:30:39.4387203+13:00:#9: Navigate back to homepage from Popular Make - TestAssembly:BuggyCars/Feature:NavLinks/Scenario:Navigate+back+to+homepage+from+Popular+Make
+2021-03-04T17:30:39.4387312+13:00:#11: Register with correct details - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+correct+details
+2021-03-04T17:30:39.4387355+13:00:#12: Register with incorrect password - Username already taken - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Username+already+taken
+2021-03-04T17:30:39.4387395+13:00:#13: Register with incorrect password - Minumum password - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Minumum+password
+2021-03-04T17:30:39.4387456+13:00:#14: Register with incorrect password - Password no numeric - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+numeric
+2021-03-04T17:30:39.4387496+13:00:#15: Register with incorrect password - Password no lowercase - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+lowercase
+2021-03-04T17:30:39.4387535+13:00:#16: Register with incorrect password - Password no uppercase - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+uppercase
+2021-03-04T17:30:39.4387605+13:00:#17: Register with incorrect password - Password no symbol - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+symbol
+2021-03-04T17:30:39.4387669+13:00:#18: Register with incorrect password - Password do not match - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+do+not+match
+2021-03-04T17:30:39.4387772+13:00:#20: Update Profile with correct details - TestAssembly:BuggyCars/Feature:Update+Profile/Scenario:Update+Profile+with+correct+details
+2021-03-04T17:30:39.4387905+13:00:#21: Update Profile with incorrect Age Range - TestAssembly:BuggyCars/Feature:Update+Profile/Scenario:Update+Profile+with+incorrect+Age+Range
+2021-03-04T17:30:39.4387986+13:00:#23: Vote via Popular Model Link - TestAssembly:BuggyCars/Feature:Vote/Scenario:Vote+via+Popular+Model+Link
+2021-03-04T17:30:39.4388033+13:00:#24: Vote via Popular Make Link - TestAssembly:BuggyCars/Feature:Vote/Scenario:Vote+via+Popular+Make+Link
+2021-03-04T17:30:39.4388074+13:00:#25: Vote via Overall Rating Link - TestAssembly:BuggyCars/Feature:Vote/Scenario:Vote+via+Overall+Rating+Link
+2021-03-04T17:30:39.4388155+13:00:#26: Unable to vote without logging in - From Popular Model - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Popular+Model
+2021-03-04T17:30:39.4388194+13:00:#27: Unable to vote without logging in - From Popular Make - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Popular+Make
+2021-03-04T17:30:39.4388231+13:00:#28: Unable to vote without logging in - From Overall Rating - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Overall+Rating
+2021-03-04T17:30:39.4388573+13:00:End: Test Suite Dump
+2021-03-04T17:30:39.4482056+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:30:39.4492742+13:00:Thread#:Scheduler: testitem #4 from normal test queue 
+2021-03-04T17:30:39.4493094+13:00:Thread#0:Scheduler: considering testitem #4 for thread 0
+2021-03-04T17:30:39.4511669+13:00:Thread#0:TestItem#4:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:30:39.4511742+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:30:39.4511758+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:30:39.4511773+13:00:Thread#0:Scheduler: using testitem #4 for thread 0
+2021-03-04T17:30:39.4515793+13:00:Thread#0:Scheduler: Test #4 is scheduled for thread
+2021-03-04T17:30:39.4523626+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:30:39.4536508+13:00:Thread #0: creating new test thread executor for BuggyCars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (target: Default)
+2021-03-04T17:30:39.4551317+13:00:Thread #0: Creating test assembly executor for execution model OutProc
+2021-03-04T17:30:39.4552433+13:00:Thread #0: Creating test assembly executor for execution model OutProc
+2021-03-04T17:30:39.4564478+13:00:Thread #0: using TechTalk.SpecRun.Framework.Execution.OutOfProc.StreamJsonRPC.OutOfProcessTestAssemblyExecutorHost to execute tests
+2021-03-04T17:30:39.4574675+13:00:starting Out Of Process Executor
+2021-03-04T17:30:39.4584278+13:00:Assembly resolving Microsoft.VisualStudio.Validation, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:30:39.4599604+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' from .deps.json file
+2021-03-04T17:30:39.4599663+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Validation' from .deps.json
+2021-03-04T17:30:39.4606481+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:30:39.4608699+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll'
+2021-03-04T17:30:39.4609110+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Validation.exe'
+2021-03-04T17:30:39.4609362+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:30:39.4610582+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:30:39.4613635+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:30:39.4613716+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:30:39.4613726+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll'
+2021-03-04T17:30:39.4614142+13:00:[AssemblyCache] Found file 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll' for assembly 'Microsoft.VisualStudio.Validation'
+2021-03-04T17:30:39.4616239+13:00:[AssemblyCache] Resolved 'Microsoft.VisualStudio.Validation' to C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll
+2021-03-04T17:30:39.4619718+13:00:Starting callback TCP Rpc server
+2021-03-04T17:30:39.4724312+13:00:Asynchronously starting background TCP Rpc Server on port 32768
+2021-03-04T17:30:39.4724524+13:00:Started callback TCP Rpc server on port 32768
+2021-03-04T17:30:39.4724533+13:00:Starting logger TCP Rpc server
+2021-03-04T17:30:39.4742030+13:00:Asynchronously starting background TCP Rpc Server on port 32769
+2021-03-04T17:30:39.4742181+13:00:Started logger TCP Rpc server on port 32769
+2021-03-04T17:30:39.5215655+13:00:Executing test executor at 'dotnet' 'exec "C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\TechTalk.SpecRun.Framework.Executor.anycpu.netcoreapp3_1.dll" --remoteRunnerPid 1416 --uniqueId "2021-03-04T173039" --outputFolder "C:\BuggyCars\TestResults" --callbackPort 32768 --loggerPort 32769' in 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:30:39.5256620+13:00:Executor with PID 8672 has been started successfully.
+2021-03-04T17:30:39.5273256+13:00:Out of Process Executor 8672 started
+2021-03-04T17:30:39.5273321+13:00:Waiting for endpoint
+2021-03-04T17:30:39.6997247+13:00:Assembly resolving Microsoft.VisualStudio.Threading, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:30:39.6997670+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' from .deps.json file
+2021-03-04T17:30:39.6997716+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Threading' from .deps.json
+2021-03-04T17:30:39.6997760+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:30:39.6997796+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll'
+2021-03-04T17:30:39.6998573+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Threading.exe'
+2021-03-04T17:30:39.6998984+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:30:39.6999034+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:30:39.6999456+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:30:39.6999520+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:30:39.6999529+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll'
+2021-03-04T17:30:39.7000132+13:00:[AssemblyCache] Found file 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll' for assembly 'Microsoft.VisualStudio.Threading'
+2021-03-04T17:30:39.7003046+13:00:[AssemblyCache] Resolved 'Microsoft.VisualStudio.Threading' to C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll
+2021-03-04T17:30:39.8384243+13:00:Remote executor port received: 32770
+2021-03-04T17:30:39.8386379+13:00:Creating executor TCP client on port 32770
+2021-03-04T17:30:39.8388969+13:00:Created executor TCP client on port 32770
+2021-03-04T17:30:39.8389007+13:00:Connecting to remote executor TCP server
+2021-03-04T17:30:39.8394461+13:00:Connected remote executor TCP server
+2021-03-04T17:30:39.8395676+13:00:trying to connect to Out of Process Executor the 1 attempt
+2021-03-04T17:30:39.8395755+13:00:Connection to Out of Process Executor established in the 1 attempt
+2021-03-04T17:30:39.9369180+13:00:2021-03-04T17:30:39.9362967+13:00:OutOfProcessTestAssemblyExecutor: initialized for C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll on test thread #0
+2021-03-04T17:30:39.9395744+13:00:Endpoint 8672 started
+2021-03-04T17:30:39.9521393+13:00:2021-03-04T17:30:39.9519253+13:00:OutOfProcessTestAssemblyExecutor: running tests...
+2021-03-04T17:30:40.0311767+13:00:2021-03-04T17:30:40.0309271+13:00:Assembly resolving TechTalk.SpecFlow, Version=3.7.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41
+2021-03-04T17:30:40.0331595+13:00:2021-03-04T17:30:40.0329302+13:00:[AssemblyCache] Trying to resolve 'TechTalk.SpecFlow' from .deps.json file
+2021-03-04T17:30:40.0348297+13:00:2021-03-04T17:30:40.0347134+13:00:[AssemblyCache] Resolved 'TechTalk.SpecFlow' to 'C:\Users\Admin\.nuget\packages\specflow\3.7.13\lib\netstandard2.0\TechTalk.SpecFlow.dll'
+2021-03-04T17:30:40.1001014+13:00:2021-03-04T17:30:40.0997961+13:00:Thread#0:T:-> Loading plugin C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:30:40.1006803+13:00:2021-03-04T17:30:40.1005908+13:00:Assembly resolving Microsoft.Extensions.DependencyModel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2021-03-04T17:30:40.1008213+13:00:2021-03-04T17:30:40.1007485+13:00:[AssemblyCache] Trying to resolve 'Microsoft.Extensions.DependencyModel' from .deps.json file
+2021-03-04T17:30:40.1011888+13:00:2021-03-04T17:30:40.1009983+13:00:[AssemblyCache] Resolved 'Microsoft.Extensions.DependencyModel' to 'C:\Users\Admin\.nuget\packages\microsoft.extensions.dependencymodel\1.0.3\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll'
+2021-03-04T17:30:40.1256925+13:00:2021-03-04T17:30:40.1254253+13:00:Assembly resolving Microsoft.DotNet.PlatformAbstractions, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2021-03-04T17:30:40.1259052+13:00:2021-03-04T17:30:40.1258066+13:00:[AssemblyCache] Trying to resolve 'Microsoft.DotNet.PlatformAbstractions' from .deps.json file
+2021-03-04T17:30:40.1264656+13:00:2021-03-04T17:30:40.1263762+13:00:[AssemblyCache] Resolved 'Microsoft.DotNet.PlatformAbstractions' to 'C:\Users\Admin\.nuget\packages\microsoft.dotnet.platformabstractions\1.0.3\lib\netstandard1.3\Microsoft.DotNet.PlatformAbstractions.dll'
+2021-03-04T17:30:40.1308454+13:00:2021-03-04T17:30:40.1307493+13:00:Thread#0:T:-> Missing [assembly:RuntimePlugin] attribute in BuggyCars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null. Please check https://go.specflow.org/doc-plugins for details.
+2021-03-04T17:30:40.1310479+13:00:2021-03-04T17:30:40.1309596+13:00:Thread#0:T:-> Loading plugin C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecRun.Runtime.SpecFlowPlugin.dll
+2021-03-04T17:30:40.1342805+13:00:2021-03-04T17:30:40.1341254+13:00:Thread#0:T:-> Using default config
+2021-03-04T17:30:40.1401604+13:00:2021-03-04T17:30:40.1400431+13:00:Assembly resolving Cucumber.Messages, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b10c5988214f940c
+2021-03-04T17:30:40.1403616+13:00:2021-03-04T17:30:40.1402828+13:00:[AssemblyCache] Trying to resolve 'Cucumber.Messages' from .deps.json file
+2021-03-04T17:30:40.1409528+13:00:2021-03-04T17:30:40.1405524+13:00:[AssemblyCache] Resolved 'Cucumber.Messages' to 'C:\Users\Admin\.nuget\packages\cucumber.messages\6.0.1\lib\netstandard2.0\Cucumber.Messages.dll'
+2021-03-04T17:30:40.1417279+13:00:2021-03-04T17:30:40.1416348+13:00:Assembly resolving Google.Protobuf, Version=3.7.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604
+2021-03-04T17:30:40.1418781+13:00:2021-03-04T17:30:40.1418033+13:00:[AssemblyCache] Trying to resolve 'Google.Protobuf' from .deps.json file
+2021-03-04T17:30:40.1420941+13:00:2021-03-04T17:30:40.1420096+13:00:[AssemblyCache] Resolved 'Google.Protobuf' to 'C:\Users\Admin\.nuget\packages\google.protobuf\3.7.0\lib\netstandard1.0\Google.Protobuf.dll'
+2021-03-04T17:30:40.1675399+13:00:2021-03-04T17:30:40.1672943+13:00:Assembly resolving Utf8Json, Version=1.3.7.0, Culture=neutral, PublicKeyToken=8a73d3ba7e392e27
+2021-03-04T17:30:40.1677412+13:00:2021-03-04T17:30:40.1676607+13:00:[AssemblyCache] Trying to resolve 'Utf8Json' from .deps.json file
+2021-03-04T17:30:40.1679801+13:00:2021-03-04T17:30:40.1679024+13:00:[AssemblyCache] Resolved 'Utf8Json' to 'C:\Users\Admin\.nuget\packages\utf8json\1.3.7\lib\netstandard2.0\Utf8Json.dll'
+2021-03-04T17:30:40.2760054+13:00:Thread#0: Test #4/0 is started on thread #0
+2021-03-04T17:30:40.2911763+13:00:2021-03-04T17:30:40.2909375+13:00:Assembly resolving WebDriver, Version=3.141.0.0, Culture=neutral, PublicKeyToken=null
+2021-03-04T17:30:40.2913806+13:00:2021-03-04T17:30:40.2912995+13:00:[AssemblyCache] Trying to resolve 'WebDriver' from .deps.json file
+2021-03-04T17:30:40.2916254+13:00:2021-03-04T17:30:40.2915389+13:00:[AssemblyCache] Resolved 'WebDriver' to 'C:\Users\Admin\.nuget\packages\selenium.webdriver\3.141.0\lib\netstandard2.0\WebDriver.dll'
+2021-03-04T17:30:42.9108667+13:00:2021-03-04T17:30:42.9095331+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:30:42.9181869+13:00:2021-03-04T17:30:42.9174513+13:00:Assembly resolving nunit.framework, Version=3.13.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
+2021-03-04T17:30:42.9190144+13:00:2021-03-04T17:30:42.9186061+13:00:[AssemblyCache] Trying to resolve 'nunit.framework' from .deps.json file
+2021-03-04T17:30:42.9198527+13:00:2021-03-04T17:30:42.9194662+13:00:[AssemblyCache] Resolved 'nunit.framework' to 'C:\Users\Admin\.nuget\packages\nunit\3.13.1\lib\netstandard2.0\nunit.framework.dll'
+2021-03-04T17:30:42.9388026+13:00:2021-03-04T17:30:42.9381264+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:30:42.9435854+13:00:2021-03-04T17:30:42.9430214+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:30:42.9441977+13:00:2021-03-04T17:30:42.9438856+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:30:42.9446880+13:00:2021-03-04T17:30:42.9444226+13:00:Thread#0:B:  | UserName | Password  |
+2021-03-04T17:30:42.9451339+13:00:2021-03-04T17:30:42.9448815+13:00:Thread#0:B:  | skyreign | Chasec20. |
+2021-03-04T17:30:43.0281162+13:00:2021-03-04T17:30:43.0274765+13:00:Thread#0:T:done: LoginSteps.GivenIEnterTheFollowingDetails(<table>) (0.1s)
+2021-03-04T17:30:43.0286901+13:00:2021-03-04T17:30:43.0285796+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:30:45.0791285+13:00:2021-03-04T17:30:45.0783185+13:00:Thread#0:T:done: LoginSteps.GivenIClickLoginButton() (2.0s)
+2021-03-04T17:30:45.0800587+13:00:2021-03-04T17:30:45.0798281+13:00:Thread#0:B:Then I should see my Profile link
+2021-03-04T17:30:45.0998637+13:00:2021-03-04T17:30:45.0994090+13:00:Thread#0:T:done: LoginSteps.ThenIShouldSeeMyProfileLink() (0.0s)
+2021-03-04T17:30:45.1118068+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:30:45.1118547+13:00:Thread#:Scheduler: testitem #5 from normal test queue 
+2021-03-04T17:30:45.1118577+13:00:Thread#0:Scheduler: considering testitem #5 for thread 0
+2021-03-04T17:30:45.1119068+13:00:Thread#0:TestItem#5:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:30:45.1119133+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:30:45.1119144+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:30:45.1119155+13:00:Thread#0:Scheduler: using testitem #5 for thread 0
+2021-03-04T17:30:45.1119342+13:00:Thread#0:Scheduler: Test #5 is scheduled for thread
+2021-03-04T17:30:45.1119565+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:30:45.2828761+13:00:Thread#0: Test #4/0 is finished on thread #0 as Succeeded within 5.0063041 seconds
+2021-03-04T17:30:45.2843022+13:00:Thread#0: Test #5/0 is started on thread #0
+2021-03-04T17:30:47.4043366+13:00:2021-03-04T17:30:47.4036470+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:30:47.4097618+13:00:2021-03-04T17:30:47.4090835+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:30:47.4107564+13:00:2021-03-04T17:30:47.4102926+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:30:47.4112131+13:00:2021-03-04T17:30:47.4109837+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:30:47.4115294+13:00:2021-03-04T17:30:47.4113400+13:00:Thread#0:B:  | UserName | Password |
+2021-03-04T17:30:47.4253921+13:00:2021-03-04T17:30:47.4116899+13:00:Thread#0:B:  | skyreign | 1234     |
+2021-03-04T17:30:47.4938053+13:00:2021-03-04T17:30:47.4929077+13:00:Thread#0:T:done: LoginSteps.GivenIEnterTheFollowingDetails(<table>) (0.1s)
+2021-03-04T17:30:47.4954681+13:00:2021-03-04T17:30:47.4940474+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:30:49.5454515+13:00:2021-03-04T17:30:49.5411981+13:00:Thread#0:T:done: LoginSteps.GivenIClickLoginButton() (2.0s)
+2021-03-04T17:30:49.5473926+13:00:2021-03-04T17:30:49.5462053+13:00:Thread#0:B:Then login failed
+2021-03-04T17:30:49.5687478+13:00:2021-03-04T17:30:49.5664276+13:00:Thread#0:T:done: LoginSteps.ThenLoginFailed() (0.0s)
+2021-03-04T17:30:49.5870731+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:30:49.5871290+13:00:Thread#:Scheduler: testitem #7 from normal test queue 
+2021-03-04T17:30:49.5871883+13:00:Thread#0:Scheduler: considering testitem #7 for thread 0
+2021-03-04T17:30:49.5872643+13:00:Thread#0:TestItem#7:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:30:49.5872692+13:00:Thread#0:TestItem#7:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:30:49.5872721+13:00:Thread#0:TestItem#7:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:30:49.5872770+13:00:Thread#0:Scheduler: using testitem #7 for thread 0
+2021-03-04T17:30:49.5873081+13:00:Thread#0:Scheduler: Test #7 is scheduled for thread
+2021-03-04T17:30:49.5873465+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:30:49.7360751+13:00:Thread#0: Test #5/0 is finished on thread #0 as Succeeded within 4.451703 seconds
+2021-03-04T17:30:49.7438963+13:00:Thread#0: Test #7/0 is started on thread #0
+2021-03-04T17:30:51.8405684+13:00:2021-03-04T17:30:51.8401172+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:30:51.8445993+13:00:2021-03-04T17:30:51.8443410+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:30:51.8450970+13:00:2021-03-04T17:30:51.8448983+13:00:Thread#0:B:When I Navigate to any pagename
+2021-03-04T17:30:51.8453061+13:00:2021-03-04T17:30:51.8452097+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:30:51.8455217+13:00:2021-03-04T17:30:51.8454259+13:00:Thread#0:B:  | PageName       |
+2021-03-04T17:30:51.8457606+13:00:2021-03-04T17:30:51.8455917+13:00:Thread#0:B:  | Overall Rating |
+2021-03-04T17:30:53.9087920+13:00:2021-03-04T17:30:53.9083143+13:00:Thread#0:T:done: NavLinksSteps.WhenINavigateToAnyPagename(<table>) (2.1s)
+2021-03-04T17:30:53.9095354+13:00:2021-03-04T17:30:53.9093322+13:00:Thread#0:B:Then I should be able to navigate back to my homepage
+2021-03-04T17:30:53.9419490+13:00:2021-03-04T17:30:53.9417438+13:00:Thread#0:T:done: NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() (0.0s)
+2021-03-04T17:30:53.9430831+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:30:53.9431127+13:00:Thread#:Scheduler: testitem #8 from normal test queue 
+2021-03-04T17:30:53.9431183+13:00:Thread#0:Scheduler: considering testitem #8 for thread 0
+2021-03-04T17:30:53.9431741+13:00:Thread#0:TestItem#8:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:30:53.9431787+13:00:Thread#0:TestItem#8:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:30:53.9431804+13:00:Thread#0:TestItem#8:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:30:53.9431841+13:00:Thread#0:Scheduler: using testitem #8 for thread 0
+2021-03-04T17:30:53.9432270+13:00:Thread#0:Scheduler: Test #8 is scheduled for thread
+2021-03-04T17:30:53.9432974+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:30:54.0865783+13:00:Thread#0: Test #7/0 is finished on thread #0 as Succeeded within 4.3426068 seconds
+2021-03-04T17:30:54.0868628+13:00:Thread#0: Test #8/0 is started on thread #0
+2021-03-04T17:30:56.1819462+13:00:2021-03-04T17:30:56.1814568+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:30:56.1870959+13:00:2021-03-04T17:30:56.1865940+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:30:56.1880792+13:00:2021-03-04T17:30:56.1878047+13:00:Thread#0:B:When I Navigate to any pagename
+2021-03-04T17:30:56.1887773+13:00:2021-03-04T17:30:56.1884202+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:30:56.1892170+13:00:2021-03-04T17:30:56.1890076+13:00:Thread#0:B:  | PageName      |
+2021-03-04T17:30:56.1896922+13:00:2021-03-04T17:30:56.1894696+13:00:Thread#0:B:  | Popular Model |
+2021-03-04T17:30:58.2539974+13:00:2021-03-04T17:30:58.2536356+13:00:Thread#0:T:done: NavLinksSteps.WhenINavigateToAnyPagename(<table>) (2.1s)
+2021-03-04T17:30:58.2545558+13:00:2021-03-04T17:30:58.2544099+13:00:Thread#0:B:Then I should be able to navigate back to my homepage
+2021-03-04T17:30:58.2837802+13:00:2021-03-04T17:30:58.2834568+13:00:Thread#0:T:done: NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() (0.0s)
+2021-03-04T17:30:58.2852529+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:30:58.2852737+13:00:Thread#:Scheduler: testitem #9 from normal test queue 
+2021-03-04T17:30:58.2852779+13:00:Thread#0:Scheduler: considering testitem #9 for thread 0
+2021-03-04T17:30:58.2853183+13:00:Thread#0:TestItem#9:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:30:58.2853218+13:00:Thread#0:TestItem#9:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:30:58.2853231+13:00:Thread#0:TestItem#9:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:30:58.2853275+13:00:Thread#0:Scheduler: using testitem #9 for thread 0
+2021-03-04T17:30:58.2853556+13:00:Thread#0:Scheduler: Test #9 is scheduled for thread
+2021-03-04T17:30:58.2853865+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:30:58.4318231+13:00:Thread#0: Test #8/0 is finished on thread #0 as Succeeded within 4.344906 seconds
+2021-03-04T17:30:58.4325828+13:00:Thread#0: Test #9/0 is started on thread #0
+2021-03-04T17:31:00.6074207+13:00:2021-03-04T17:31:00.6070947+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:31:00.6112238+13:00:2021-03-04T17:31:00.6110568+13:00:Thread#0:T:done: LoginSteps.GivenILaunchTheApplication() (0.0s)
+2021-03-04T17:31:00.6114840+13:00:2021-03-04T17:31:00.6114192+13:00:Thread#0:B:When I Navigate to any pagename
+2021-03-04T17:31:00.6116050+13:00:2021-03-04T17:31:00.6115447+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:31:00.6117163+13:00:2021-03-04T17:31:00.6116510+13:00:Thread#0:B:  | PageName     |
+2021-03-04T17:31:00.6118292+13:00:2021-03-04T17:31:00.6117738+13:00:Thread#0:B:  | Popular Make |

@@ -1,0 +1,463 @@
+﻿2021-03-04T17:29:55.1360271+13:00;VSTestExecutionThread;Info;SpecFlow+Runner execution started
+2021-03-04T17:29:55.1361272+13:00;VSTestExecutionThread;Info;SpecFlow+Runner 3.7.3 in Framework netcore31 in x64 mode execution started
+2021-03-04T17:29:55.1361291+13:00;VSTestExecutionThread;Info;TestAdapter Location: C:\BuggyCars\bin\Debug\netcoreapp3.1\TechTalk.SpecRun.VisualStudio.TestAdapter.dll
+2021-03-04T17:29:55.1371678+13:00;VSTestExecutionThread;Info;Current UserName: 'Admin', MachineName: 'DESKTOP-HN18009'
+2021-03-04T17:29:55.1616287+13:00;VSTestExecutionThread;Info;SpecRun: running tests in C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:29:55.1617806+13:00;VSTestExecutionThread;Info;Output folder configured to "C:\BuggyCars\TestResults" (default)
+2021-03-04T17:29:55.1618163+13:00;VSTestExecutionThread;Info;Profile: 
+2021-03-04T17:29:55.1877495+13:00;VSTestExecutionThread;Info;Log file path: C:\BuggyCars\TestResults\Unnamed project__2021-03-04T172955.log
+2021-03-04T17:29:55.1908217+13:00;Thread#12;Info;Checking activation
+2021-03-04T17:29:55.2393384+13:00;Thread#12;Info;Activated.
+2021-03-04T17:29:55.2394991+13:00;Thread#12;Info;Activation check completed
+2021-03-04T17:29:55.2395362+13:00;Thread#12;Info;Starting test run
+2021-03-04T17:29:55.2853546+13:00;Thread#12;Info;Discovering target: Default
+2021-03-04T17:29:55.2854746+13:00;Thread#12;Info;Discovering tests from assembly: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:29:55.3341246+13:00;Thread#12;Info;Discovered tests from assembly: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:29:55.3347924+13:00:Test Suite Dump
+2021-03-04T17:29:55.3356983+13:00:#0: Unnamed project/ - 
+2021-03-04T17:29:55.3357066+13:00:#1: Default - 
+2021-03-04T17:29:55.3357076+13:00:#2: BuggyCars - 
+2021-03-04T17:29:55.3357089+13:00:#3: Login - 
+2021-03-04T17:29:55.3357098+13:00:#6: NavLinks - 
+2021-03-04T17:29:55.3357109+13:00:#10: Register - 
+2021-03-04T17:29:55.3357121+13:00:#19: Update Profile - 
+2021-03-04T17:29:55.3357130+13:00:#22: Vote - 
+2021-03-04T17:29:55.3363384+13:00:#4: Login to Buggy Cars Rating site with correct password - TestAssembly:BuggyCars/Feature:Login/Scenario:Login+to+Buggy+Cars+Rating+site+with+correct+password
+2021-03-04T17:29:55.3363568+13:00:#5: Login to Buggy Cars Rating site with wrong details - TestAssembly:BuggyCars/Feature:Login/Scenario:Login+to+Buggy+Cars+Rating+site+with+wrong+details
+2021-03-04T17:29:55.3363622+13:00:#7: Navigate back to homepage from Overall Rating - TestAssembly:BuggyCars/Feature:NavLinks/Scenario:Navigate+back+to+homepage+from+Overall+Rating
+2021-03-04T17:29:55.3363686+13:00:#8: Navigate back to homepage from Popular Model - TestAssembly:BuggyCars/Feature:NavLinks/Scenario:Navigate+back+to+homepage+from+Popular+Model
+2021-03-04T17:29:55.3363726+13:00:#9: Navigate back to homepage from Popular Make - TestAssembly:BuggyCars/Feature:NavLinks/Scenario:Navigate+back+to+homepage+from+Popular+Make
+2021-03-04T17:29:55.3363764+13:00:#11: Register with correct details - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+correct+details
+2021-03-04T17:29:55.3363838+13:00:#12: Register with incorrect password - Username already taken - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Username+already+taken
+2021-03-04T17:29:55.3363881+13:00:#13: Register with incorrect password - Minumum password - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Minumum+password
+2021-03-04T17:29:55.3363921+13:00:#14: Register with incorrect password - Password no numeric - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+numeric
+2021-03-04T17:29:55.3363981+13:00:#15: Register with incorrect password - Password no lowercase - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+lowercase
+2021-03-04T17:29:55.3364021+13:00:#16: Register with incorrect password - Password no uppercase - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+uppercase
+2021-03-04T17:29:55.3364059+13:00:#17: Register with incorrect password - Password no symbol - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+no+symbol
+2021-03-04T17:29:55.3364117+13:00:#18: Register with incorrect password - Password do not match - TestAssembly:BuggyCars/Feature:Register/Scenario:Register+with+incorrect+password+-+Password+do+not+match
+2021-03-04T17:29:55.3364159+13:00:#20: Update Profile with correct details - TestAssembly:BuggyCars/Feature:Update+Profile/Scenario:Update+Profile+with+correct+details
+2021-03-04T17:29:55.3364198+13:00:#21: Update Profile with incorrect Age Range - TestAssembly:BuggyCars/Feature:Update+Profile/Scenario:Update+Profile+with+incorrect+Age+Range
+2021-03-04T17:29:55.3364253+13:00:#23: Vote via Popular Model Link - TestAssembly:BuggyCars/Feature:Vote/Scenario:Vote+via+Popular+Model+Link
+2021-03-04T17:29:55.3364289+13:00:#24: Vote via Popular Make Link - TestAssembly:BuggyCars/Feature:Vote/Scenario:Vote+via+Popular+Make+Link
+2021-03-04T17:29:55.3364327+13:00:#25: Vote via Overall Rating Link - TestAssembly:BuggyCars/Feature:Vote/Scenario:Vote+via+Overall+Rating+Link
+2021-03-04T17:29:55.3364376+13:00:#26: Unable to vote without logging in - From Popular Model - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Popular+Model
+2021-03-04T17:29:55.3364462+13:00:#27: Unable to vote without logging in - From Popular Make - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Popular+Make
+2021-03-04T17:29:55.3364507+13:00:#28: Unable to vote without logging in - From Overall Rating - TestAssembly:BuggyCars/Feature:Vote/Scenario:Unable+to+vote+without+logging+in+-+From+Overall+Rating
+2021-03-04T17:29:55.3364820+13:00:End: Test Suite Dump
+2021-03-04T17:29:55.3461811+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:55.3472511+13:00:Thread#:Scheduler: testitem #4 from normal test queue 
+2021-03-04T17:29:55.3472878+13:00:Thread#0:Scheduler: considering testitem #4 for thread 0
+2021-03-04T17:29:55.3492039+13:00:Thread#0:TestItem#4:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:55.3492093+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:55.3492108+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:55.3492122+13:00:Thread#0:Scheduler: using testitem #4 for thread 0
+2021-03-04T17:29:55.3496241+13:00:Thread#0:Scheduler: Test #4 is scheduled for thread
+2021-03-04T17:29:55.3504192+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:29:55.3517321+13:00:Thread #0: creating new test thread executor for BuggyCars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (target: Default)
+2021-03-04T17:29:55.3531917+13:00:Thread #0: Creating test assembly executor for execution model OutProc
+2021-03-04T17:29:55.3533038+13:00:Thread #0: Creating test assembly executor for execution model OutProc
+2021-03-04T17:29:55.3692353+13:00:Thread #0: using TechTalk.SpecRun.Framework.Execution.OutOfProc.StreamJsonRPC.OutOfProcessTestAssemblyExecutorHost to execute tests
+2021-03-04T17:29:55.3702897+13:00:starting Out Of Process Executor
+2021-03-04T17:29:55.3941608+13:00:Assembly resolving Microsoft.VisualStudio.Validation, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:29:55.3961326+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' from .deps.json file
+2021-03-04T17:29:55.3961389+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Validation' from .deps.json
+2021-03-04T17:29:55.3968300+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:55.3970625+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll'
+2021-03-04T17:29:55.3971220+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Validation.exe'
+2021-03-04T17:29:55.3971443+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:55.3972678+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:29:55.3975969+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:29:55.3976029+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:29:55.3976039+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Validation' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll'
+2021-03-04T17:29:55.3976550+13:00:[AssemblyCache] Found file 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll' for assembly 'Microsoft.VisualStudio.Validation'
+2021-03-04T17:29:55.3979494+13:00:[AssemblyCache] Resolved 'Microsoft.VisualStudio.Validation' to C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Validation.dll
+2021-03-04T17:29:55.3983357+13:00:Starting callback TCP Rpc server
+2021-03-04T17:29:55.4107132+13:00:Asynchronously starting background TCP Rpc Server on port 32768
+2021-03-04T17:29:55.4109167+13:00:Started callback TCP Rpc server on port 32768
+2021-03-04T17:29:55.4109195+13:00:Starting logger TCP Rpc server
+2021-03-04T17:29:55.4127392+13:00:Asynchronously starting background TCP Rpc Server on port 32769
+2021-03-04T17:29:55.4127504+13:00:Started logger TCP Rpc server on port 32769
+2021-03-04T17:29:55.4939832+13:00:Executing test executor at 'dotnet' 'exec "C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\TechTalk.SpecRun.Framework.Executor.anycpu.netcoreapp3_1.dll" --remoteRunnerPid 7428 --uniqueId "2021-03-04T172955" --outputFolder "C:\BuggyCars\TestResults" --callbackPort 32768 --loggerPort 32769' in 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:55.4989582+13:00:Executor with PID 8676 has been started successfully.
+2021-03-04T17:29:55.5008457+13:00:Out of Process Executor 8676 started
+2021-03-04T17:29:55.5008555+13:00:Waiting for endpoint
+2021-03-04T17:29:55.8284828+13:00:Assembly resolving Microsoft.VisualStudio.Threading, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:29:55.8285247+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' from .deps.json file
+2021-03-04T17:29:55.8285304+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Threading' from .deps.json
+2021-03-04T17:29:55.8285348+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:55.8285357+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll'
+2021-03-04T17:29:55.8285623+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Threading.exe'
+2021-03-04T17:29:55.8285824+13:00:[AssemblyCache] Could not resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:55.8285861+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:29:55.8286289+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:29:55.8286358+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:29:55.8286391+13:00:[AssemblyCache] Trying to resolve 'Microsoft.VisualStudio.Threading' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll'
+2021-03-04T17:29:55.8286838+13:00:[AssemblyCache] Found file 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll' for assembly 'Microsoft.VisualStudio.Threading'
+2021-03-04T17:29:55.8290585+13:00:[AssemblyCache] Resolved 'Microsoft.VisualStudio.Threading' to C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\Microsoft.VisualStudio.Threading.dll
+2021-03-04T17:29:55.9626469+13:00:Remote executor port received: 32770
+2021-03-04T17:29:55.9628408+13:00:Creating executor TCP client on port 32770
+2021-03-04T17:29:55.9630826+13:00:Created executor TCP client on port 32770
+2021-03-04T17:29:55.9630864+13:00:Connecting to remote executor TCP server
+2021-03-04T17:29:55.9636055+13:00:Connected remote executor TCP server
+2021-03-04T17:29:55.9637076+13:00:trying to connect to Out of Process Executor the 1 attempt
+2021-03-04T17:29:55.9637125+13:00:Connection to Out of Process Executor established in the 1 attempt
+2021-03-04T17:29:56.0713408+13:00:2021-03-04T17:29:56.0705684+13:00:OutOfProcessTestAssemblyExecutor: initialized for C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll on test thread #0
+2021-03-04T17:29:56.0737875+13:00:Endpoint 8676 started
+2021-03-04T17:29:56.0849195+13:00:2021-03-04T17:29:56.0847298+13:00:OutOfProcessTestAssemblyExecutor: running tests...
+2021-03-04T17:29:56.1651589+13:00:2021-03-04T17:29:56.1649328+13:00:Assembly resolving TechTalk.SpecFlow, Version=3.7.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41
+2021-03-04T17:29:56.1669039+13:00:2021-03-04T17:29:56.1668161+13:00:[AssemblyCache] Trying to resolve 'TechTalk.SpecFlow' from .deps.json file
+2021-03-04T17:29:56.1684968+13:00:2021-03-04T17:29:56.1684129+13:00:[AssemblyCache] Resolved 'TechTalk.SpecFlow' to 'C:\Users\Admin\.nuget\packages\specflow\3.7.13\lib\netstandard2.0\TechTalk.SpecFlow.dll'
+2021-03-04T17:29:56.2409939+13:00:2021-03-04T17:29:56.2407322+13:00:Thread#0:T:-> Loading plugin C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll
+2021-03-04T17:29:56.2415401+13:00:2021-03-04T17:29:56.2414717+13:00:Assembly resolving Microsoft.Extensions.DependencyModel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2021-03-04T17:29:56.2416531+13:00:2021-03-04T17:29:56.2415955+13:00:[AssemblyCache] Trying to resolve 'Microsoft.Extensions.DependencyModel' from .deps.json file
+2021-03-04T17:29:56.2419925+13:00:2021-03-04T17:29:56.2418057+13:00:[AssemblyCache] Resolved 'Microsoft.Extensions.DependencyModel' to 'C:\Users\Admin\.nuget\packages\microsoft.extensions.dependencymodel\1.0.3\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll'
+2021-03-04T17:29:56.2676822+13:00:2021-03-04T17:29:56.2669891+13:00:Assembly resolving Microsoft.DotNet.PlatformAbstractions, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2021-03-04T17:29:56.2685913+13:00:2021-03-04T17:29:56.2681162+13:00:[AssemblyCache] Trying to resolve 'Microsoft.DotNet.PlatformAbstractions' from .deps.json file
+2021-03-04T17:29:56.2695114+13:00:2021-03-04T17:29:56.2690792+13:00:[AssemblyCache] Resolved 'Microsoft.DotNet.PlatformAbstractions' to 'C:\Users\Admin\.nuget\packages\microsoft.dotnet.platformabstractions\1.0.3\lib\netstandard1.3\Microsoft.DotNet.PlatformAbstractions.dll'
+2021-03-04T17:29:56.2752464+13:00:2021-03-04T17:29:56.2745163+13:00:Thread#0:T:-> Missing [assembly:RuntimePlugin] attribute in BuggyCars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null. Please check https://go.specflow.org/doc-plugins for details.
+2021-03-04T17:29:56.2760135+13:00:2021-03-04T17:29:56.2756291+13:00:Thread#0:T:-> Loading plugin C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecRun.Runtime.SpecFlowPlugin.dll
+2021-03-04T17:29:56.2960592+13:00:2021-03-04T17:29:56.2955376+13:00:Thread#0:T:-> Using default config
+2021-03-04T17:29:56.3022819+13:00:2021-03-04T17:29:56.3021090+13:00:Assembly resolving Cucumber.Messages, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b10c5988214f940c
+2021-03-04T17:29:56.3024554+13:00:2021-03-04T17:29:56.3023827+13:00:[AssemblyCache] Trying to resolve 'Cucumber.Messages' from .deps.json file
+2021-03-04T17:29:56.3027321+13:00:2021-03-04T17:29:56.3026349+13:00:[AssemblyCache] Resolved 'Cucumber.Messages' to 'C:\Users\Admin\.nuget\packages\cucumber.messages\6.0.1\lib\netstandard2.0\Cucumber.Messages.dll'
+2021-03-04T17:29:56.3035052+13:00:2021-03-04T17:29:56.3034147+13:00:Assembly resolving Google.Protobuf, Version=3.7.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604
+2021-03-04T17:29:56.3036461+13:00:2021-03-04T17:29:56.3035786+13:00:[AssemblyCache] Trying to resolve 'Google.Protobuf' from .deps.json file
+2021-03-04T17:29:56.3038615+13:00:2021-03-04T17:29:56.3037791+13:00:[AssemblyCache] Resolved 'Google.Protobuf' to 'C:\Users\Admin\.nuget\packages\google.protobuf\3.7.0\lib\netstandard1.0\Google.Protobuf.dll'
+2021-03-04T17:29:56.3295893+13:00:2021-03-04T17:29:56.3293517+13:00:Assembly resolving Utf8Json, Version=1.3.7.0, Culture=neutral, PublicKeyToken=8a73d3ba7e392e27
+2021-03-04T17:29:56.3297875+13:00:2021-03-04T17:29:56.3297042+13:00:[AssemblyCache] Trying to resolve 'Utf8Json' from .deps.json file
+2021-03-04T17:29:56.3300322+13:00:2021-03-04T17:29:56.3299479+13:00:[AssemblyCache] Resolved 'Utf8Json' to 'C:\Users\Admin\.nuget\packages\utf8json\1.3.7\lib\netstandard2.0\Utf8Json.dll'
+2021-03-04T17:29:56.4462658+13:00:Thread#0: Test #4/0 is started on thread #0
+2021-03-04T17:29:56.4618749+13:00:2021-03-04T17:29:56.4616546+13:00:Assembly resolving WebDriver, Version=3.141.0.0, Culture=neutral, PublicKeyToken=null
+2021-03-04T17:29:56.4620534+13:00:2021-03-04T17:29:56.4619846+13:00:[AssemblyCache] Trying to resolve 'WebDriver' from .deps.json file
+2021-03-04T17:29:56.4623193+13:00:2021-03-04T17:29:56.4622263+13:00:[AssemblyCache] Resolved 'WebDriver' to 'C:\Users\Admin\.nuget\packages\selenium.webdriver\3.141.0\lib\netstandard2.0\WebDriver.dll'
+2021-03-04T17:29:56.4940790+13:00:2021-03-04T17:29:56.4938340+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.4983303+13:00:2021-03-04T17:29:56.4981501+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5033954+13:00:2021-03-04T17:29:56.5032327+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:29:56.5035909+13:00:2021-03-04T17:29:56.5034952+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5037356+13:00:2021-03-04T17:29:56.5036617+13:00:Thread#0:B:  | UserName | Password  |
+2021-03-04T17:29:56.5038912+13:00:2021-03-04T17:29:56.5038045+13:00:Thread#0:B:  | skyreign | Chasec20. |
+2021-03-04T17:29:56.5048897+13:00:2021-03-04T17:29:56.5047851+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5052131+13:00:2021-03-04T17:29:56.5051181+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:29:56.5054066+13:00:2021-03-04T17:29:56.5053263+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5057369+13:00:2021-03-04T17:29:56.5056418+13:00:Thread#0:B:Then I should see my Profile link
+2021-03-04T17:29:56.5059363+13:00:2021-03-04T17:29:56.5058547+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5149274+13:00:Thread#0:TestItem#4:Scheduler: reschedule tests for testitem #4
+2021-03-04T17:29:56.5158860+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:56.5159150+13:00:Thread#:Scheduler: dequeuing a rescheduled testitem: #4
+2021-03-04T17:29:56.5159191+13:00:Thread#0:Scheduler: considering testitem #4 for thread 0
+2021-03-04T17:29:56.5159543+13:00:Thread#0:TestItem#4:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:56.5159578+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:56.5159588+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:56.5159598+13:00:Thread#0:Scheduler: using testitem #4 for thread 0
+2021-03-04T17:29:56.5159805+13:00:Thread#0:Scheduler: Test #4 is scheduled for thread
+2021-03-04T17:29:56.5160034+13:00:Thread#0:Scheduler: with testItemExecutionIndex 1
+2021-03-04T17:29:56.5371649+13:00:Thread#0: Test #4/0 is finished on thread #0 as Failed within 0.0903124 seconds
+2021-03-04T17:29:56.5384602+13:00:Thread#0: Test #4/1 is started on thread #0
+2021-03-04T17:29:56.5393734+13:00:2021-03-04T17:29:56.5392876+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.5395604+13:00:2021-03-04T17:29:56.5394900+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5397502+13:00:2021-03-04T17:29:56.5396620+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:29:56.5398781+13:00:2021-03-04T17:29:56.5398081+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5400209+13:00:2021-03-04T17:29:56.5399365+13:00:Thread#0:B:  | UserName | Password  |
+2021-03-04T17:29:56.5401424+13:00:2021-03-04T17:29:56.5400785+13:00:Thread#0:B:  | skyreign | Chasec20. |
+2021-03-04T17:29:56.5403163+13:00:2021-03-04T17:29:56.5402469+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5404660+13:00:2021-03-04T17:29:56.5403950+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:29:56.5406225+13:00:2021-03-04T17:29:56.5405537+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5407704+13:00:2021-03-04T17:29:56.5406987+13:00:Thread#0:B:Then I should see my Profile link
+2021-03-04T17:29:56.5409364+13:00:2021-03-04T17:29:56.5408661+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5416145+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:56.5416260+13:00:Thread#:Scheduler: dequeuing a rescheduled testitem: #4
+2021-03-04T17:29:56.5416273+13:00:Thread#0:Scheduler: considering testitem #4 for thread 0
+2021-03-04T17:29:56.5416432+13:00:Thread#0:TestItem#4:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:56.5416448+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:56.5416458+13:00:Thread#0:TestItem#4:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:56.5416467+13:00:Thread#0:Scheduler: using testitem #4 for thread 0
+2021-03-04T17:29:56.5416538+13:00:Thread#0:Scheduler: Test #4 is scheduled for thread
+2021-03-04T17:29:56.5416606+13:00:Thread#0:Scheduler: with testItemExecutionIndex 2
+2021-03-04T17:29:56.5425761+13:00:Thread#0: Test #4/1 is finished on thread #0 as Failed within 0.0040921 seconds
+2021-03-04T17:29:56.5427693+13:00:Thread#0: Test #4/2 is started on thread #0
+2021-03-04T17:29:56.5433396+13:00:2021-03-04T17:29:56.5432577+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.5434973+13:00:2021-03-04T17:29:56.5434283+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5436372+13:00:2021-03-04T17:29:56.5435716+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:29:56.5437594+13:00:2021-03-04T17:29:56.5436969+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5486776+13:00:2021-03-04T17:29:56.5485825+13:00:Thread#0:B:  | UserName | Password  |
+2021-03-04T17:29:56.5488490+13:00:2021-03-04T17:29:56.5487597+13:00:Thread#0:B:  | skyreign | Chasec20. |
+2021-03-04T17:29:56.5490547+13:00:2021-03-04T17:29:56.5489706+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5492260+13:00:2021-03-04T17:29:56.5491441+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:29:56.5494039+13:00:2021-03-04T17:29:56.5493278+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5495440+13:00:2021-03-04T17:29:56.5494806+13:00:Thread#0:B:Then I should see my Profile link
+2021-03-04T17:29:56.5497270+13:00:2021-03-04T17:29:56.5496431+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5504657+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:56.5504741+13:00:Thread#:Scheduler: testitem #5 from normal test queue 
+2021-03-04T17:29:56.5504755+13:00:Thread#0:Scheduler: considering testitem #5 for thread 0
+2021-03-04T17:29:56.5504941+13:00:Thread#0:TestItem#5:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:56.5504954+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:56.5504963+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:56.5504972+13:00:Thread#0:Scheduler: using testitem #5 for thread 0
+2021-03-04T17:29:56.5505033+13:00:Thread#0:Scheduler: Test #5 is scheduled for thread
+2021-03-04T17:29:56.5505289+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:29:56.5516033+13:00:Thread#0: Test #4/2 is finished on thread #0 as Failed within 0.0088202 seconds
+2021-03-04T17:29:56.5517827+13:00:Thread#0: Test #5/0 is started on thread #0
+2021-03-04T17:29:56.5522771+13:00:2021-03-04T17:29:56.5521661+13:00:Thread#0:T:warning: The previous FeatureContext was not disposed.
+2021-03-04T17:29:56.5535086+13:00:2021-03-04T17:29:56.5534180+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.5536837+13:00:2021-03-04T17:29:56.5536184+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5538295+13:00:2021-03-04T17:29:56.5537675+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:29:56.5539597+13:00:2021-03-04T17:29:56.5538793+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5540906+13:00:2021-03-04T17:29:56.5540160+13:00:Thread#0:B:  | UserName | Password |
+2021-03-04T17:29:56.5542175+13:00:2021-03-04T17:29:56.5541493+13:00:Thread#0:B:  | skyreign | 1234     |
+2021-03-04T17:29:56.5543587+13:00:2021-03-04T17:29:56.5542973+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5544875+13:00:2021-03-04T17:29:56.5544272+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:29:56.5546981+13:00:2021-03-04T17:29:56.5546346+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5548330+13:00:2021-03-04T17:29:56.5547722+13:00:Thread#0:B:Then login failed
+2021-03-04T17:29:56.5549780+13:00:2021-03-04T17:29:56.5549163+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5553630+13:00:Thread#0:TestItem#5:Scheduler: reschedule tests for testitem #5
+2021-03-04T17:29:56.5554849+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:56.5554892+13:00:Thread#:Scheduler: dequeuing a rescheduled testitem: #5
+2021-03-04T17:29:56.5554905+13:00:Thread#0:Scheduler: considering testitem #5 for thread 0
+2021-03-04T17:29:56.5555024+13:00:Thread#0:TestItem#5:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:56.5555037+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:56.5555046+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:56.5555055+13:00:Thread#0:Scheduler: using testitem #5 for thread 0
+2021-03-04T17:29:56.5555124+13:00:Thread#0:Scheduler: Test #5 is scheduled for thread
+2021-03-04T17:29:56.5555176+13:00:Thread#0:Scheduler: with testItemExecutionIndex 1
+2021-03-04T17:29:56.5565177+13:00:Thread#0: Test #5/0 is finished on thread #0 as Failed within 0.0047246 seconds
+2021-03-04T17:29:56.5566911+13:00:Thread#0: Test #5/1 is started on thread #0
+2021-03-04T17:29:56.5574190+13:00:2021-03-04T17:29:56.5573114+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.5575964+13:00:2021-03-04T17:29:56.5575315+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5577694+13:00:2021-03-04T17:29:56.5576838+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:29:56.5578993+13:00:2021-03-04T17:29:56.5578248+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5580053+13:00:2021-03-04T17:29:56.5579451+13:00:Thread#0:B:  | UserName | Password |
+2021-03-04T17:29:56.5581273+13:00:2021-03-04T17:29:56.5580589+13:00:Thread#0:B:  | skyreign | 1234     |
+2021-03-04T17:29:56.5582703+13:00:2021-03-04T17:29:56.5582069+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5583987+13:00:2021-03-04T17:29:56.5583378+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:29:56.5585357+13:00:2021-03-04T17:29:56.5584751+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5586663+13:00:2021-03-04T17:29:56.5586032+13:00:Thread#0:B:Then login failed
+2021-03-04T17:29:56.5588062+13:00:2021-03-04T17:29:56.5587444+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5592657+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:56.5592709+13:00:Thread#:Scheduler: dequeuing a rescheduled testitem: #5
+2021-03-04T17:29:56.5592722+13:00:Thread#0:Scheduler: considering testitem #5 for thread 0
+2021-03-04T17:29:56.5592822+13:00:Thread#0:TestItem#5:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:56.5592834+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:56.5592871+13:00:Thread#0:TestItem#5:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:56.5592881+13:00:Thread#0:Scheduler: using testitem #5 for thread 0
+2021-03-04T17:29:56.5592938+13:00:Thread#0:Scheduler: Test #5 is scheduled for thread
+2021-03-04T17:29:56.5592978+13:00:Thread#0:Scheduler: with testItemExecutionIndex 2
+2021-03-04T17:29:56.5601091+13:00:Thread#0: Test #5/1 is finished on thread #0 as Failed within 0.0034058 seconds
+2021-03-04T17:29:56.5602738+13:00:Thread#0: Test #5/2 is started on thread #0
+2021-03-04T17:29:56.5609217+13:00:2021-03-04T17:29:56.5608136+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.5610968+13:00:2021-03-04T17:29:56.5610205+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5612592+13:00:2021-03-04T17:29:56.5611841+13:00:Thread#0:B:And I enter the following details
+2021-03-04T17:29:56.5613841+13:00:2021-03-04T17:29:56.5613133+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5614884+13:00:2021-03-04T17:29:56.5614307+13:00:Thread#0:B:  | UserName | Password |
+2021-03-04T17:29:56.5616002+13:00:2021-03-04T17:29:56.5615348+13:00:Thread#0:B:  | skyreign | 1234     |
+2021-03-04T17:29:56.5617442+13:00:2021-03-04T17:29:56.5616814+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5618733+13:00:2021-03-04T17:29:56.5618130+13:00:Thread#0:B:When I click the login button
+2021-03-04T17:29:56.5620100+13:00:2021-03-04T17:29:56.5619507+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5621387+13:00:2021-03-04T17:29:56.5620794+13:00:Thread#0:B:Then login failed
+2021-03-04T17:29:56.5622814+13:00:2021-03-04T17:29:56.5622199+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5627300+13:00:Thread#0:Scheduler: get next test for thread 0
+2021-03-04T17:29:56.5627366+13:00:Thread#:Scheduler: testitem #7 from normal test queue 
+2021-03-04T17:29:56.5627383+13:00:Thread#0:Scheduler: considering testitem #7 for thread 0
+2021-03-04T17:29:56.5627472+13:00:Thread#0:TestItem#7:testItemMatchesCurrentTestThread:UnSpecific
+2021-03-04T17:29:56.5627487+13:00:Thread#0:TestItem#7:runsOnOneOtherThreadSpecific:False
+2021-03-04T17:29:56.5627499+13:00:Thread#0:TestItem#7:runsOnOneOtherThreadUnspecific:False
+2021-03-04T17:29:56.5627511+13:00:Thread#0:Scheduler: using testitem #7 for thread 0
+2021-03-04T17:29:56.5627573+13:00:Thread#0:Scheduler: Test #7 is scheduled for thread
+2021-03-04T17:29:56.5627629+13:00:Thread#0:Scheduler: with testItemExecutionIndex 0
+2021-03-04T17:29:56.5640522+13:00:Thread#0: Test #5/2 is finished on thread #0 as Failed within 0.0037667 seconds
+2021-03-04T17:29:56.5642231+13:00:Thread#0: Test #7/0 is started on thread #0
+2021-03-04T17:29:56.5657942+13:00:2021-03-04T17:29:56.5656546+13:00:Thread#0:B:Given I launch the application
+2021-03-04T17:29:56.5660098+13:00:2021-03-04T17:29:56.5659181+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5661867+13:00:2021-03-04T17:29:56.5661044+13:00:Thread#0:B:When I Navigate to any pagename
+2021-03-04T17:29:56.5663403+13:00:2021-03-04T17:29:56.5662629+13:00:Thread#0:B:  --- table step argument ---
+2021-03-04T17:29:56.5664736+13:00:2021-03-04T17:29:56.5664065+13:00:Thread#0:B:  | PageName       |
+2021-03-04T17:29:56.5666167+13:00:2021-03-04T17:29:56.5665369+13:00:Thread#0:B:  | Overall Rating |
+2021-03-04T17:29:56.5668069+13:00:2021-03-04T17:29:56.5667309+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5669767+13:00:2021-03-04T17:29:56.5668979+13:00:Thread#0:B:Then I should be able to navigate back to my homepage
+2021-03-04T17:29:56.5671273+13:00:2021-03-04T17:29:56.5670613+13:00:Thread#0:T:skipped because of previous errors
+2021-03-04T17:29:56.5675904+13:00:Cancelling because configured number of failures reached
+2021-03-04T17:29:56.5690390+13:00:Thread#0: Test #7/0 is finished on thread #0 as Failed within 0.0048046 seconds
+2021-03-04T17:29:56.5726652+13:00:2021-03-04T17:29:56.5725700+13:00:Got Deinitialize Signal
+2021-03-04T17:29:56.5744234+13:00:RPC Client disconnected, because 'Disposed'. 
+LastMessage: 
+Description:Stream has been disposed
+Exception:<none>
+2021-03-04T17:29:56.5747382+13:00:RPC Server disconnected, because 'Disposed'. 
+LastMessage: 
+Description:Reached end of stream.
+Exception:<none>
+2021-03-04T17:29:56.5753210+13:00:RPC Server disconnected, because 'Disposed'. 
+LastMessage: 
+Description:Reached end of stream.
+Exception:<none>
+2021-03-04T17:29:56.5766147+13:00:Assembly resolving System.Diagnostics.Process.resources, Version=4.2.2.0, Culture=en-US, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:29:56.5766218+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' from .deps.json file
+2021-03-04T17:29:56.5766258+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' from .deps.json
+2021-03-04T17:29:56.5766288+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:56.5766297+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:29:56.5766528+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:29:56.5766708+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1'
+2021-03-04T17:29:56.5766743+13:00:TargetFramework: .NETCoreApp,Version=v3.1
+2021-03-04T17:29:56.5767090+13:00:Tfm: netcoreapp3.1
+2021-03-04T17:29:56.5767122+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:29:56.5767130+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:29:56.5767415+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:29:56.5767620+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\BuggyCars\bin\Debug\netcoreapp3.1\SpecFlowPlusRunner\netcoreapp3.1'
+2021-03-04T17:29:56.5810166+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12'
+2021-03-04T17:29:56.5810216+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:29:56.5813107+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:29:56.5813376+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\3.1.12'
+2021-03-04T17:29:56.5814335+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12'
+2021-03-04T17:29:56.5814410+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:29:56.5814914+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:29:56.5815204+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.12'
+2021-03-04T17:29:56.5817879+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12'
+2021-03-04T17:29:56.5817929+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12\System.Diagnostics.Process.resources.dll'
+2021-03-04T17:29:56.5820767+13:00:[AssemblyCache] Trying to resolve 'System.Diagnostics.Process.resources' to 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12\System.Diagnostics.Process.resources.exe'
+2021-03-04T17:29:56.5821023+13:00:[AssemblyCache] Could not resolve 'System.Diagnostics.Process.resources' in folder 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.12'
+2021-03-04T17:29:56.5826517+13:00:Assembly resolving System.Diagnostics.Process.resources, Version=4.2.2.0, Culture=en, PublicKeyToken=b03f5f7f11d50a3a
+2021-03-04T17:29:56.5871032+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5871105+13:00:Thread#:Scheduler: testitem #8 from normal test queue 
+2021-03-04T17:29:56.5871121+13:00:Thread#-1:Scheduler: considering testitem #8 for thread -1
+2021-03-04T17:29:56.5871132+13:00:Thread#-1:Scheduler: using testitem #8 for thread -1
+2021-03-04T17:29:56.5871147+13:00:Thread#-1:Scheduler: Test #8 is scheduled for thread
+2021-03-04T17:29:56.5873047+13:00:Thread#-1: Test #8/0 is started on thread #-1
+2021-03-04T17:29:56.5873390+13:00:Thread#-1: Test #8/0 is finished on thread #-1 as Skipped within 1.21E-05 seconds
+2021-03-04T17:29:56.5873493+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5873514+13:00:Thread#:Scheduler: testitem #9 from normal test queue 
+2021-03-04T17:29:56.5873527+13:00:Thread#-1:Scheduler: considering testitem #9 for thread -1
+2021-03-04T17:29:56.5873537+13:00:Thread#-1:Scheduler: using testitem #9 for thread -1
+2021-03-04T17:29:56.5873547+13:00:Thread#-1:Scheduler: Test #9 is scheduled for thread
+2021-03-04T17:29:56.5873618+13:00:Thread#-1: Test #9/0 is started on thread #-1
+2021-03-04T17:29:56.5873654+13:00:Thread#-1: Test #9/0 is finished on thread #-1 as Skipped within 8E-07 seconds
+2021-03-04T17:29:56.5873748+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5873764+13:00:Thread#:Scheduler: testitem #11 from normal test queue 
+2021-03-04T17:29:56.5873774+13:00:Thread#-1:Scheduler: considering testitem #11 for thread -1
+2021-03-04T17:29:56.5873784+13:00:Thread#-1:Scheduler: using testitem #11 for thread -1
+2021-03-04T17:29:56.5873793+13:00:Thread#-1:Scheduler: Test #11 is scheduled for thread
+2021-03-04T17:29:56.5873836+13:00:Thread#-1: Test #11/0 is started on thread #-1
+2021-03-04T17:29:56.5873874+13:00:Thread#-1: Test #11/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5873998+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5874012+13:00:Thread#:Scheduler: testitem #12 from normal test queue 
+2021-03-04T17:29:56.5874021+13:00:Thread#-1:Scheduler: considering testitem #12 for thread -1
+2021-03-04T17:29:56.5874031+13:00:Thread#-1:Scheduler: using testitem #12 for thread -1
+2021-03-04T17:29:56.5874040+13:00:Thread#-1:Scheduler: Test #12 is scheduled for thread
+2021-03-04T17:29:56.5874081+13:00:Thread#-1: Test #12/0 is started on thread #-1
+2021-03-04T17:29:56.5874110+13:00:Thread#-1: Test #12/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5874247+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5874270+13:00:Thread#:Scheduler: testitem #13 from normal test queue 
+2021-03-04T17:29:56.5874280+13:00:Thread#-1:Scheduler: considering testitem #13 for thread -1
+2021-03-04T17:29:56.5874290+13:00:Thread#-1:Scheduler: using testitem #13 for thread -1
+2021-03-04T17:29:56.5874298+13:00:Thread#-1:Scheduler: Test #13 is scheduled for thread
+2021-03-04T17:29:56.5874371+13:00:Thread#-1: Test #13/0 is started on thread #-1
+2021-03-04T17:29:56.5874400+13:00:Thread#-1: Test #13/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5874943+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5874957+13:00:Thread#:Scheduler: testitem #14 from normal test queue 
+2021-03-04T17:29:56.5874979+13:00:Thread#-1:Scheduler: considering testitem #14 for thread -1
+2021-03-04T17:29:56.5874989+13:00:Thread#-1:Scheduler: using testitem #14 for thread -1
+2021-03-04T17:29:56.5874998+13:00:Thread#-1:Scheduler: Test #14 is scheduled for thread
+2021-03-04T17:29:56.5875040+13:00:Thread#-1: Test #14/0 is started on thread #-1
+2021-03-04T17:29:56.5875069+13:00:Thread#-1: Test #14/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5875195+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5875209+13:00:Thread#:Scheduler: testitem #15 from normal test queue 
+2021-03-04T17:29:56.5875219+13:00:Thread#-1:Scheduler: considering testitem #15 for thread -1
+2021-03-04T17:29:56.5875228+13:00:Thread#-1:Scheduler: using testitem #15 for thread -1
+2021-03-04T17:29:56.5875243+13:00:Thread#-1:Scheduler: Test #15 is scheduled for thread
+2021-03-04T17:29:56.5875285+13:00:Thread#-1: Test #15/0 is started on thread #-1
+2021-03-04T17:29:56.5875313+13:00:Thread#-1: Test #15/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5875436+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5875449+13:00:Thread#:Scheduler: testitem #16 from normal test queue 
+2021-03-04T17:29:56.5875459+13:00:Thread#-1:Scheduler: considering testitem #16 for thread -1
+2021-03-04T17:29:56.5875469+13:00:Thread#-1:Scheduler: using testitem #16 for thread -1
+2021-03-04T17:29:56.5875477+13:00:Thread#-1:Scheduler: Test #16 is scheduled for thread
+2021-03-04T17:29:56.5875524+13:00:Thread#-1: Test #16/0 is started on thread #-1
+2021-03-04T17:29:56.5875553+13:00:Thread#-1: Test #16/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5875674+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5875688+13:00:Thread#:Scheduler: testitem #17 from normal test queue 
+2021-03-04T17:29:56.5875698+13:00:Thread#-1:Scheduler: considering testitem #17 for thread -1
+2021-03-04T17:29:56.5875707+13:00:Thread#-1:Scheduler: using testitem #17 for thread -1
+2021-03-04T17:29:56.5875716+13:00:Thread#-1:Scheduler: Test #17 is scheduled for thread
+2021-03-04T17:29:56.5875757+13:00:Thread#-1: Test #17/0 is started on thread #-1
+2021-03-04T17:29:56.5875793+13:00:Thread#-1: Test #17/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5875919+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5875942+13:00:Thread#:Scheduler: testitem #18 from normal test queue 
+2021-03-04T17:29:56.5875952+13:00:Thread#-1:Scheduler: considering testitem #18 for thread -1
+2021-03-04T17:29:56.5875962+13:00:Thread#-1:Scheduler: using testitem #18 for thread -1
+2021-03-04T17:29:56.5875970+13:00:Thread#-1:Scheduler: Test #18 is scheduled for thread
+2021-03-04T17:29:56.5876020+13:00:Thread#-1: Test #18/0 is started on thread #-1
+2021-03-04T17:29:56.5876056+13:00:Thread#-1: Test #18/0 is finished on thread #-1 as Skipped within 6E-07 seconds
+2021-03-04T17:29:56.5876171+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5876185+13:00:Thread#:Scheduler: testitem #20 from normal test queue 
+2021-03-04T17:29:56.5876194+13:00:Thread#-1:Scheduler: considering testitem #20 for thread -1
+2021-03-04T17:29:56.5876204+13:00:Thread#-1:Scheduler: using testitem #20 for thread -1
+2021-03-04T17:29:56.5876212+13:00:Thread#-1:Scheduler: Test #20 is scheduled for thread
+2021-03-04T17:29:56.5876255+13:00:Thread#-1: Test #20/0 is started on thread #-1
+2021-03-04T17:29:56.5876284+13:00:Thread#-1: Test #20/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5876421+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5876450+13:00:Thread#:Scheduler: testitem #21 from normal test queue 
+2021-03-04T17:29:56.5876460+13:00:Thread#-1:Scheduler: considering testitem #21 for thread -1
+2021-03-04T17:29:56.5876469+13:00:Thread#-1:Scheduler: using testitem #21 for thread -1
+2021-03-04T17:29:56.5876478+13:00:Thread#-1:Scheduler: Test #21 is scheduled for thread
+2021-03-04T17:29:56.5876522+13:00:Thread#-1: Test #21/0 is started on thread #-1
+2021-03-04T17:29:56.5876552+13:00:Thread#-1: Test #21/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5876667+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5876681+13:00:Thread#:Scheduler: testitem #23 from normal test queue 
+2021-03-04T17:29:56.5876691+13:00:Thread#-1:Scheduler: considering testitem #23 for thread -1
+2021-03-04T17:29:56.5876707+13:00:Thread#-1:Scheduler: using testitem #23 for thread -1
+2021-03-04T17:29:56.5876716+13:00:Thread#-1:Scheduler: Test #23 is scheduled for thread
+2021-03-04T17:29:56.5876760+13:00:Thread#-1: Test #23/0 is started on thread #-1
+2021-03-04T17:29:56.5876788+13:00:Thread#-1: Test #23/0 is finished on thread #-1 as Skipped within 6E-07 seconds
+2021-03-04T17:29:56.5876907+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5876921+13:00:Thread#:Scheduler: testitem #24 from normal test queue 
+2021-03-04T17:29:56.5876930+13:00:Thread#-1:Scheduler: considering testitem #24 for thread -1
+2021-03-04T17:29:56.5876940+13:00:Thread#-1:Scheduler: using testitem #24 for thread -1
+2021-03-04T17:29:56.5876949+13:00:Thread#-1:Scheduler: Test #24 is scheduled for thread
+2021-03-04T17:29:56.5877035+13:00:Thread#-1: Test #24/0 is started on thread #-1
+2021-03-04T17:29:56.5877066+13:00:Thread#-1: Test #24/0 is finished on thread #-1 as Skipped within 8E-07 seconds
+2021-03-04T17:29:56.5877148+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5877162+13:00:Thread#:Scheduler: testitem #25 from normal test queue 
+2021-03-04T17:29:56.5877172+13:00:Thread#-1:Scheduler: considering testitem #25 for thread -1
+2021-03-04T17:29:56.5877181+13:00:Thread#-1:Scheduler: using testitem #25 for thread -1
+2021-03-04T17:29:56.5877190+13:00:Thread#-1:Scheduler: Test #25 is scheduled for thread
+2021-03-04T17:29:56.5877258+13:00:Thread#-1: Test #25/0 is started on thread #-1
+2021-03-04T17:29:56.5877287+13:00:Thread#-1: Test #25/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5877412+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5877426+13:00:Thread#:Scheduler: testitem #26 from normal test queue 
+2021-03-04T17:29:56.5877436+13:00:Thread#-1:Scheduler: considering testitem #26 for thread -1
+2021-03-04T17:29:56.5877445+13:00:Thread#-1:Scheduler: using testitem #26 for thread -1
+2021-03-04T17:29:56.5877457+13:00:Thread#-1:Scheduler: Test #26 is scheduled for thread
+2021-03-04T17:29:56.5877502+13:00:Thread#-1: Test #26/0 is started on thread #-1
+2021-03-04T17:29:56.5877538+13:00:Thread#-1: Test #26/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5877663+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5877677+13:00:Thread#:Scheduler: testitem #27 from normal test queue 
+2021-03-04T17:29:56.5877687+13:00:Thread#-1:Scheduler: considering testitem #27 for thread -1
+2021-03-04T17:29:56.5877696+13:00:Thread#-1:Scheduler: using testitem #27 for thread -1
+2021-03-04T17:29:56.5877705+13:00:Thread#-1:Scheduler: Test #27 is scheduled for thread
+2021-03-04T17:29:56.5877750+13:00:Thread#-1: Test #27/0 is started on thread #-1
+2021-03-04T17:29:56.5877778+13:00:Thread#-1: Test #27/0 is finished on thread #-1 as Skipped within 6E-07 seconds
+2021-03-04T17:29:56.5877908+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5877921+13:00:Thread#:Scheduler: testitem #28 from normal test queue 
+2021-03-04T17:29:56.5877931+13:00:Thread#-1:Scheduler: considering testitem #28 for thread -1
+2021-03-04T17:29:56.5877940+13:00:Thread#-1:Scheduler: using testitem #28 for thread -1
+2021-03-04T17:29:56.5877949+13:00:Thread#-1:Scheduler: Test #28 is scheduled for thread
+2021-03-04T17:29:56.5877994+13:00:Thread#-1: Test #28/0 is started on thread #-1
+2021-03-04T17:29:56.5878023+13:00:Thread#-1: Test #28/0 is finished on thread #-1 as Skipped within 7E-07 seconds
+2021-03-04T17:29:56.5878164+13:00:Thread#-1:Scheduler: get next test for thread -1
+2021-03-04T17:29:56.5878192+13:00:Thread#:Scheduler: at the end of normal test queue
+2021-03-04T17:29:56.5878202+13:00:Thread#-1:Scheduler: enumerator for thread is at end
+2021-03-04T17:29:56.6227425+13:00;Thread#12;Info;test run finished
+2021-03-04T17:29:56.6228119+13:00;Thread#12;Info;publishing test results
+2021-03-04T17:29:56.6228929+13:00;Thread#12;Info;Not publishing results.
+2021-03-04T17:29:56.6229306+13:00;Thread#12;Info;test results published
+2021-03-04T17:29:56.6229531+13:00;Thread#12;Info;generating reports
+2021-03-04T17:29:56.6763407+13:00;Thread#12;Info;Starting external report generation process
+2021-03-04T17:29:57.8888239+13:00;Thread#12;Info;Successfully generated reports.
+2021-03-04T17:29:57.8902112+13:00;Thread#12;Info;Successfully generated reports
+2021-03-04T17:29:57.8939734+13:00:Total: 21 (test executions: 25)
+2021-03-04T17:29:57.8949614+13:00:Succeeded: 0
+2021-03-04T17:29:57.8951233+13:00:Ignored: 0
+2021-03-04T17:29:57.8952620+13:00:Pending: 0
+2021-03-04T17:29:57.8952664+13:00:Skipped: 18
+2021-03-04T17:29:57.8953950+13:00:Failed: 3
+2021-03-04T17:29:57.8989136+13:00;VSTestExecutionThread;Info;Adding attachments to VSTest
+2021-03-04T17:29:57.8989462+13:00;VSTestExecutionThread;Info;adding Test Execution Report 'C:\BuggyCars\TestResults\Unnamed project__2021-03-04T172955.html'
+========== End of log file ==========

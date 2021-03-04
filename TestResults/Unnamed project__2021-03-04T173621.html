@@ -1,0 +1,3403 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>Unnamed project Test Execution Report</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript">
+            /**
+            * jQuery.fn.sortElements
+            * --------------
+            * #author James Padolsey (http://james.padolsey.com)
+            * #version 0.11
+            * #updated 18-MAR-2010
+            * #url https://raw.github.com/jamespadolsey/jQuery-Plugins/master/sortElements/jquery.sortElements.js
+            * --------------
+            * #param Function comparator:
+            *   Exactly the same behaviour as [1,2,3].sort(comparator)
+            *   
+            * #param Function getSortable
+            *   A function that should return the element that is
+            *   to be sorted. The comparator will run on the
+            *   current collection, but you may want the actual
+            *   resulting sort to occur on a parent or another
+            *   associated element.
+            *   
+            *   E.g. $('td').sortElements(comparator, function(){
+            *      return this.parentNode; 
+            *   })
+            *   
+            *   The <td>'s parent (<tr>) will be sorted instead
+            *   of the <td> itself.
+            */
+            jQuery.fn.sortElements = (function () {
+
+                var sort = [].sort;
+
+                return function (comparator, getSortable) {
+
+                    getSortable = getSortable || function () { return this; };
+
+                    var placements = this.map(function () {
+
+                        var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+
+                        // Since the element itself will change position, we have
+                        // to have some way of storing it's original position in
+                        // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+
+                        return function () {
+
+                            if (parentNode === this) {
+                                throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                            }
+
+                            // Insert before flag:
+                            parentNode.insertBefore(this, nextSibling);
+                            // Remove flag:
+                            parentNode.removeChild(nextSibling);
+
+                        };
+
+                    });
+
+                    return sort.call(this, comparator).each(function (i) {
+                        placements[i].call(getSortable.call(this));
+                    });
+
+                };
+
+            })();
+        </script>
+        <script type="text/javascript">
+            jQuery.fn.setBarSizes = (function () {
+                return function (metricName, maxBarSize, min) {
+                    var max = Math.max.apply(Math, $.makeArray($(this).map(function () { return Number($(this).attr('data-sr-' + metricName)); })));
+                    var scale = 1.0;
+                    while (max > 0.0 && max <= 10.0) {
+                        scale = scale * 10.0;
+                        max = max * 10.0;
+                    }
+                    max = (Math.ceil(max / 2) * 2) / scale;
+
+                    this.each(function () {
+                        var barAnchor = $(this).find('a');
+                        var actual = $(this).attr('data-sr-' + metricName);
+                        var newHeight = Math.max(Math.round(maxBarSize * (actual - min) / (max - min)), 2);
+                        barAnchor.css({ height: newHeight });
+                    });
+
+                    var unit = "";
+                    if (metricName.substr(metricName.length - 4, 4) === "time")
+                        unit = "s";
+
+                    $('#testview .scale-min-label').each(function () {
+                        $(this).text(min.toString() + unit);
+                    });
+                    $('#testview .scale-max-label').each(function () {
+                        $(this).text(max.toString() + unit);
+                    });
+                    var mid = max / 2;
+                    $('#testview .scale-mid-label').each(function () {
+                        $(this).text(mid.toString() + unit);
+                    });
+                };
+            })();
+
+            function getComparer(metricName, isDesc) {
+                return function (a, b) {
+                    var aNumber = Number($(a).attr('data-sr-' + metricName));
+                    var bNumber = Number($(b).attr('data-sr-' + metricName));
+                    var result = aNumber > bNumber ? 1 : (aNumber < bNumber ? -1 : 0);
+                    if (isDesc)
+                        result = -1 * result;
+
+                    if (result == 0 && metricName != "order")
+                        result = getComparer("order", false)(a, b);
+
+                    return result;
+                };
+            }
+
+            var currentSort = "";
+            function doSort(allowToggleDesc) {
+                var newSort = $("input[name='barSortOrder']:checked").val();
+                if (allowToggleDesc && currentSort == newSort) {
+                    $('#barSortDesc').click();
+                    doSort(false);
+                    return;
+                }
+                currentSort = newSort;
+                $('#testview td.testview-item').sortElements(getComparer(newSort, $('#barSortDesc').is(':checked')));
+            }
+
+
+            function doSetHeights(allowSort) {
+                var selectedMetric = $("input[name='barHeight']:checked").val();
+                $('#testview td.testview-item').setBarSizes(selectedMetric, 60, 0.0);
+
+                if (allowSort && currentSort != selectedMetric) {
+                    var $radios = $("input[name='barSortOrder']");
+                    $radios.filter('[value=' + selectedMetric + ']').attr('checked', true);
+                    $("#barSortDesc").attr("checked", [true]);
+                    doSort(false);
+                }
+            }
+
+            $(document).ready(function () {
+                $("input[name='barSortOrder']").click(function () { doSort(true); return true; });
+                $("input[name='barSortDesc']").change(function () { doSort(false); });
+                $("input[name='barHeight']").change(function () { doSetHeights(true); });
+
+                doSort(false);
+                doSetHeights(false);
+
+                $("div.scrollable").css({ 'overflow': 'auto' });
+            });
+        </script>
+
+        <style type="text/css">
+            body 
+            {
+                color: #000000;
+                font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif;
+                line-height: 130%;
+            }
+            h1 {
+                font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;
+                font-size: 170%;
+                font-weight: bold;
+            }            
+            h2 {
+                font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;
+                font-size: 130%;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }            
+            h3 {
+                font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;
+                font-size: 120%;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }            
+            a.bar
+            {
+                text-decoration: none;
+                display: block;
+                line-height: 1px;
+            }
+            .description
+            {
+                font-style: italic;
+            }
+            .log 
+            {
+                width: 600px;
+                white-space: pre-wrap;
+                display: block;
+                margin: 0px;
+            }
+            .errorMessage 
+            {
+                width: 600px;
+                color: Red;
+                font-weight: bold;
+            }
+            .stackTrace 
+            {
+                width: 600px;
+                white-space: pre-wrap;
+                font-style: italic;
+                color: Red;
+                display: block;
+            }
+            table.testEvents
+            {
+                border: solid 1px #e8eef4;
+                border-collapse: collapse;
+            }
+            table.testEvents td
+            {
+                vertical-align: top;
+                padding: 5px;
+                border: solid 1px #e8eef4;
+            }
+            table.testEvents th
+            {
+                padding: 6px 5px;
+                text-align: left;
+                background-color: #e8eef4;
+                border: solid 1px #e8eef4;                
+            }
+            .comment
+            {
+                font-style: italic;
+                font-size: smaller;
+            }
+            .startupBar
+            {
+                background-color: #EEEEEE;
+                cursor: default;
+            }
+            
+            .colorSucceeded
+            {
+                background-color: #90ED7B;
+            }
+            .colorIgnored
+            {
+                background-color: #FFFF85;
+            }
+            .colorPending
+            {
+                background-color: #D47BED;
+            }
+            .colorNothingToRun
+            {
+                background-color: #CCCCFF;
+            }
+            .colorSkipped
+            {
+                background-color: #CCCCFF;
+            }
+            .colorInconclusive
+            {
+                background-color: #7BEDED;
+            }
+            .colorCleanupFailed
+            {
+                background-color: #FFCCCC;
+            }
+            .colorRandomlyFailed
+            {
+                background-color: #EDB07B;
+            }
+            .colorFailed
+            {
+                background-color: #ED5F5F;
+            }
+            .colorInitializationFailed
+            {
+                background-color: #FF0000;
+            }
+            .colorFrameworkError
+            {
+                background-color: #FF0000;
+            }
+            ul.subNodeLinks
+            {
+                padding-left: 20px;
+                margin: 0px;
+            }
+            ul.subNodeLinks li
+            {
+                list-style: none;
+            }
+            
+            /* views general */
+            div.scrollable
+            {
+                /*overflow: auto; - thsi has to be set from js, because of an IE9 bug */
+            }
+            div.viewbox
+            {
+                position: relative;
+                border: 3px solid #e8eef4;
+            }
+            div.viewbox table
+            {
+                border: 0px;
+            }
+                        
+            /* testview */
+            #testview
+            {
+                padding-top: 23px;
+            }
+            
+            table.testview-items td
+            {
+                vertical-align: bottom;
+                padding: 0px 1px 0px 1px;
+            }
+            td.right-padding, td.left-padding
+            {
+                width: 25px;
+                min-width: 25px;
+            }
+            table.testview-items a.bar
+            {
+                width: 5px;
+            }
+            table.testview-items tr.testview-items-row
+            {
+                height: 60px;
+            }
+            
+            /* scale */
+            table.vertical-scale 
+            {
+                position: absolute;
+                top: 23px;
+                left: 0px;
+                width: 100%;
+                z-index: -100;
+            }
+            table.vertical-scale td, tr.horizontal-scale td
+            {
+                font-size: 60%;
+                line-height: normal;
+            }
+            table.vertical-scale tr.scale-max, table.vertical-scale tr.scale-mid 
+            {
+                height: 30px;
+            }
+            tr.horizontal-scale, table.vertical-scale tr.scale-min 
+            {
+                height: 12px;
+            }
+            
+            td.scale-max-label, td.scale-mid-label, td.scale-min-label
+            {
+                border-top: solid 1px #E6E6E6;
+                text-align: left;
+                vertical-align: top;
+            }
+            td.scale-10-label
+            {
+                border-left: solid 1px #E6E6E6;
+                text-align: left;
+                vertical-align: bottom;
+                padding-left: 1px;
+            }
+            tr.scale-mid td, tr.scale-min td, tr.scale-max td
+            {
+                border-top: solid 1px #E6E6E6;
+            }
+           
+            
+            /* bar-control */
+            #bar-control
+            {
+                font-size: 60%;
+                line-height: normal;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+            }
+            #bar-control label
+            {
+                font-weight: bold;
+                vertical-align: middle;
+            }
+            #bar-control .option
+            {
+                vertical-align: middle;
+                text-transform: lowercase;
+            }
+            #bar-control input[type="checkbox"]
+            {
+                padding: 0 2px 0 3px;
+            }
+            #bar-control input
+            {
+                vertical-align: top;
+                height: 12px;
+                margin: 0px;
+                padding: 0px;
+            }
+            #bar-control div
+            {
+                float: right;
+                margin: 3px 5px 3px 5px;
+            }
+
+            /* timeline view */
+            #timelineview
+            {
+                padding-top: 5px;
+            }
+            table.timelineview a
+            {
+                height: 20px;
+            }
+            table.timelineview td
+            {
+                vertical-align: bottom;
+                padding: 0px 1px 0px 0px;
+                border: 0px;
+            }
+            tr.thread-items-row
+            {
+                height: 25px;
+            }
+            tr.thread-items-row td
+            {
+                vertical-align: bottom;
+            }
+            td.thread-label
+            {
+                padding: 0px 6px 0px 6px;
+                text-align: right;
+                line-height: 18px;
+                vertical-align: bottom;
+            }
+            th.thread-label
+            {
+                padding: 3px 6px 0px 6px;
+                line-height: 18px;
+                text-align: left;
+                vertical-align: bottom;
+            }
+        </style>
+	</head>
+	<body>
+        <h1>Unnamed project Test Execution Report</h1>
+        
+    <ul>
+        <li>Project: Unnamed project</li>
+        <li>Configuration: </li>
+        <li>Test Assemblies: C:\BuggyCars\bin\Debug\netcoreapp3.1\BuggyCars.dll</li>
+        <li>Start Time: 3/4/2021 5:36:21 PM</li>
+        <li>Duration: 00:02:26.6225173</li>
+        <li>Test Threads: 1</li>
+    </ul>
+
+
+        <h2>Result: 3 failed (1 randomly failed)</h2>
+        <table class="testEvents">
+                <tr>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+    </tr>
+
+                <td>
+            79%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 128px;" 
+           title="11 succeeded" 
+                   ></a>
+    </td>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 23px;" 
+           title="2 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+    <td>
+        <a class="bar colorRandomlyFailed" 
+           style="width: 11px;" 
+           title="1 randomly failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 34px;" 
+           title="3 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>17 (test executions: 21)</td>
+    <td>11</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>3</td>
+
+        </table>
+        
+        <h2>Test Timeline Summary</h2>
+
+        <div id="timelineview" class="viewbox">
+            <div class="scrollable">
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th class="thread-label" colspan="2">thread</th>
+                    </tr>
+                        <tr class="thread-items-row">
+                            <td class="thread-label" title="Machine: DESKTOP-HN18009">#0</td>
+                            <td colspan="3">
+                                <table class="timelineview" cellpadding="0" cellspacing="0">
+                                    <tr>
+
+                                            <td>
+        <a
+            class="bar startupBar" 
+            style="width: 3px;" 
+                title="test thread startup" 
+        >&nbsp;</a>
+    </td>
+
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with correct password (in Login)" 
+                href="#t-1239413637.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 3px;" 
+                title="Login to Buggy Cars Rating site with wrong details (in Login)" 
+                href="#t1232851961.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 3px;" 
+                title="Navigate back to homepage from Overall Rating (in NavLinks)" 
+                href="#t-1950380561.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 3px;" 
+                title="Navigate back to homepage from Popular Model (in NavLinks)" 
+                href="#t518483837.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Navigate back to homepage from Popular Make (in NavLinks)" 
+                href="#t-44162908.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Navigate back to homepage from Popular Make (in NavLinks) retry #1" 
+                href="#t-44162908.1"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 3px;" 
+                title="Navigate back to homepage from Popular Make (in NavLinks) retry #2" 
+                href="#t-44162908.2"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 9px;" 
+                title="Register with correct details (in Register)" 
+                href="#t-1682960080.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 5px;" 
+                title="Register with incorrect password - Username already taken (in Register)" 
+                href="#t1066704782.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 7px;" 
+                title="Register with incorrect password - Minumum password (in Register)" 
+                href="#t244080550.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 3px;" 
+                title="Register with incorrect password - Password do not match (in Register)" 
+                href="#t2095045589.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 14px;" 
+                title="Update Profile with correct details (in Update Profile)" 
+                href="#t486101386.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 6px;" 
+                title="Update Profile with incorrect Age Range (in Update Profile)" 
+                href="#t-696121423.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 16px;" 
+                title="Update Profile with incorrect Age Range (in Update Profile) retry #1" 
+                href="#t-696121423.1"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 15px;" 
+                title="Update Profile with incorrect Age Range (in Update Profile) retry #2" 
+                href="#t-696121423.2"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 10px;" 
+                title="Vote via Popular Model Link (in Vote)" 
+                href="#t-271531586.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorSucceeded" 
+            style="width: 12px;" 
+                title="Vote via Popular Make Link (in Vote)" 
+                href="#t1406043329.0"
+        >&nbsp;</a>
+    </td>
+    <td>
+        <a
+            class="bar colorFailed" 
+            style="width: 7px;" 
+                title="Vote via Overall Rating Link (in Vote)" 
+                href="#t1834244136.0"
+        >&nbsp;</a>
+    </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    <tr class="horizontal-scale">
+                        <td>&nbsp;</td>
+                            <td class="scale-10-label" style="width: 70px;min-width: 70px;">0s</td>
+                            <td class="scale-10-label" style="width: 70px;min-width: 70px;">70s</td>
+                        <td class="scale-10-label">140s</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        
+    <h2>Test Result View</h2>
+    <div id="testview" class="viewbox">
+        <div id="bar-control">
+            <div id="bar-control-sort">
+                <label>sort by:</label>
+                <span class="option"><input type="radio" name="barSortOrder" value="exectime" />Time</span>
+                <span class="option"><input type="radio" name="barSortOrder" value="acttime" />Act Time</span>
+                <span class="option"><input type="radio" name="barSortOrder" value="order" />Execution</span>
+                <span class="option"><input type="radio" name="barSortOrder" value="rescode" checked="checked" />Result</span>
+                <span class="option"><input type="checkbox" name="barSortDesc" id="barSortDesc" checked="checked" />desc</span>
+            </div>
+            <div id="bar-control-heights">
+                <label>heights:</label>
+                <span class="option"><input type="radio" checked="checked" name="barHeight" value="exectime" />Time</span>
+                <span class="option"><input type="radio" name="barHeight" value="acttime" />Act Time</span>
+            </div>
+        </div>
+        <table class="vertical-scale" cellpadding="0" cellspacing="0">
+            <tr class="scale-max">
+                <td class="left-padding scale-max-label">&nbsp;</td>
+                <td colspan="21">&nbsp;</td>
+                <td class="right-padding">&nbsp;</td>
+            </tr>
+            <tr class="scale-mid">
+                <td class="left-padding scale-mid-label">&nbsp;</td>
+                <td colspan="21">&nbsp;</td>
+                <td class="right-padding">&nbsp;</td>
+            </tr>
+            <tr class="scale-min">
+                <td class="left-padding scale-min-label">&nbsp;</td>
+                <td colspan="21">&nbsp;</td>
+                <td class="right-padding">&nbsp;</td>
+            </tr>
+        </table>
+        <div class="scrollable">
+            <table class="testview-items" cellpadding="0" cellspacing="0">
+                <tr class="testview-items-row">
+                    <td class="left-padding">&nbsp;</td>
+    <td class="testview-item" 
+        data-sr-exectime="4.8710958" data-sr-rescode="110" data-sr-order="0" data-sr-acttime="2.038">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 18px;"
+            title="Login to Buggy Cars Rating site with correct password (in Login)"
+            href="#t-1239413637.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.4828175" data-sr-rescode="110" data-sr-order="1" data-sr-acttime="2.083">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 17px;"
+            title="Login to Buggy Cars Rating site with wrong details (in Login)"
+            href="#t1232851961.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.3527319" data-sr-rescode="110" data-sr-order="2" data-sr-acttime="2.07">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 16px;"
+            title="Navigate back to homepage from Overall Rating (in NavLinks)"
+            href="#t-1950380561.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.3471455" data-sr-rescode="110" data-sr-order="3" data-sr-acttime="2.062">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 16px;"
+            title="Navigate back to homepage from Popular Model (in NavLinks)"
+            href="#t518483837.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="9.098663" data-sr-rescode="110" data-sr-order="7" data-sr-acttime="2.039">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 34px;"
+            title="Register with correct details (in Register)"
+            href="#t-1682960080.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="6.5896355" data-sr-rescode="110" data-sr-order="8" data-sr-acttime="2.049">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 24px;"
+            title="Register with incorrect password - Username already taken (in Register)"
+            href="#t1066704782.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7.5365149" data-sr-rescode="110" data-sr-order="9" data-sr-acttime="2.041">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 28px;"
+            title="Register with incorrect password - Minumum password (in Register)"
+            href="#t244080550.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.511015" data-sr-rescode="110" data-sr-order="10" data-sr-acttime="0.0">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 17px;"
+            title="Register with incorrect password - Password do not match (in Register)"
+            href="#t2095045589.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="14.2559963" data-sr-rescode="110" data-sr-order="11" data-sr-acttime="7.575">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 53px;"
+            title="Update Profile with correct details (in Update Profile)"
+            href="#t486101386.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="16.2305019" data-sr-rescode="110" data-sr-order="13" data-sr-acttime="7.566">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 60px;"
+            title="Update Profile with incorrect Age Range (in Update Profile) retry #1"
+            href="#t-696121423.1">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="16.2741651" data-sr-rescode="110" data-sr-order="14" data-sr-acttime="7.563">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 60px;"
+            title="Update Profile with incorrect Age Range (in Update Profile) retry #2"
+            href="#t-696121423.2">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="11.080023" data-sr-rescode="110" data-sr-order="15" data-sr-acttime="4.134">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 41px;"
+            title="Vote via Popular Model Link (in Vote)"
+            href="#t-271531586.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="12.8556724" data-sr-rescode="110" data-sr-order="16" data-sr-acttime="6.176">
+        <a
+            class="bar colorSucceeded" 
+            style="height: 47px;"
+            title="Vote via Popular Make Link (in Vote)"
+            href="#t1406043329.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="2.14E-05" data-sr-rescode="420" data-sr-order="18" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Unable to vote without logging in - From Popular Model (in Vote)"
+            href="#t927851039.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="5.1E-06" data-sr-rescode="420" data-sr-order="19" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Unable to vote without logging in - From Popular Make (in Vote)"
+            href="#t502242144.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7E-07" data-sr-rescode="420" data-sr-order="20" data-sr-acttime="0.0">
+        <a
+            class="bar colorSkipped" 
+            style="height: 2px;"
+            title="Unable to vote without logging in - From Overall Rating (in Vote)"
+            href="#t155735297.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.4241232" data-sr-rescode="540" data-sr-order="4" data-sr-acttime="2.07">
+        <a
+            class="bar colorFailed" 
+            style="height: 16px;"
+            title="Navigate back to homepage from Popular Make (in NavLinks)"
+            href="#t-44162908.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.3302372" data-sr-rescode="540" data-sr-order="5" data-sr-acttime="2.062">
+        <a
+            class="bar colorFailed" 
+            style="height: 16px;"
+            title="Navigate back to homepage from Popular Make (in NavLinks) retry #1"
+            href="#t-44162908.1">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="4.3272674" data-sr-rescode="540" data-sr-order="6" data-sr-acttime="2.068">
+        <a
+            class="bar colorFailed" 
+            style="height: 16px;"
+            title="Navigate back to homepage from Popular Make (in NavLinks) retry #2"
+            href="#t-44162908.2">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="7.7213628" data-sr-rescode="540" data-sr-order="12" data-sr-acttime="1.023">
+        <a
+            class="bar colorFailed" 
+            style="height: 28px;"
+            title="Update Profile with incorrect Age Range (in Update Profile)"
+            href="#t-696121423.0">&nbsp;</a>
+    </td>
+    <td class="testview-item" 
+        data-sr-exectime="8.0961551" data-sr-rescode="540" data-sr-order="17" data-sr-acttime="1.071">
+        <a
+            class="bar colorFailed" 
+            style="height: 30px;"
+            title="Vote via Overall Rating Link (in Vote)"
+            href="#t1834244136.0">&nbsp;</a>
+    </td>
+                    <td class="right-padding">&nbsp;</td>
+                </tr>
+                <tr class="horizontal-scale">
+                    <td class="left-padding">&nbsp;</td>
+                    <td colspan="10">&nbsp;</td>
+                        <td class="scale-10-label" colspan="10">10</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+        
+        
+    <h2>Feature Summary</h2>
+    <table class="testEvents">
+            <tr>
+            <th>Feature</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+
+            <tr>
+                <td><a href="#f662132513">Login</a></td>
+                    <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="2 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:09.3539133</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f-1475524986">NavLinks</a></td>
+                    <td>
+            40%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 132px;" 
+           title="2 succeeded" 
+                   ></a>
+    </td>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>3 (test executions: 5)</td>
+    <td>2</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:21.7815052</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f-648749121">Register</a></td>
+                    <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="4 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:27.7358284</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f878501452">Update Profile</a></td>
+                    <td>
+            75%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 299px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 99px;" 
+           title="0 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>2 (test executions: 4)</td>
+    <td>3</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:54.4820261</td>
+
+            </tr>
+            <tr>
+                <td><a href="#f-1938854756">Vote</a></td>
+                    <td>
+            67%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 66px;" 
+           title="2 succeeded" 
+                   ></a>
+    </td>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 32px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 99px;" 
+           title="3 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>6</td>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>3</td>
+        <td>00:00:32.0318777</td>
+
+            </tr>
+    </table>
+
+
+        <a name="error_summary" />
+        <h2>Error Summary</h2>
+        <table class="testEvents">
+                <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+    </tr>
+
+                <tr>
+                    <td>
+                        <a href="#t-44162908.0">Navigate back to homepage from Popular Make (in BuggyCars, NavLinks)</a>
+                            <a href="#t-44162908.1">retry #1</a>
+                            <a href="#t-44162908.2">retry #2</a>
+                    </td>
+                        <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+
+                </tr>
+                <tr>
+                    <td colspan="9" style="padding-left: 20px;"><div class="errorMessage">Error:   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+, retry #1: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+, retry #2: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  3)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+</div></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#t-696121423.0">Update Profile with incorrect Age Range (in BuggyCars, Update Profile)</a>
+                            <a href="#t-696121423.1">retry #1</a>
+                            <a href="#t-696121423.2">retry #2</a>
+                    </td>
+                        <td>
+            67%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 399px;" 
+           title="0 succeeded" 
+                   ></a>
+    </td>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="0 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+
+                </tr>
+                <tr>
+                    <td colspan="9" style="padding-left: 20px;"><div class="errorMessage">Error: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//a[@class=&#39;nav-link&#39;][text()=&#39;Profile&#39;]&quot;}
+  (Session info: chrome=88.0.4324.190)</div></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#t1834244136.0">Vote via Overall Rating Link (in BuggyCars, Vote)</a>
+                    </td>
+                        <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+
+                </tr>
+                <tr>
+                    <td colspan="9" style="padding-left: 20px;"><div class="errorMessage">Error: no such element: Unable to locate element: {&quot;method&quot;:&quot;link text&quot;,&quot;selector&quot;:&quot;Veneno&quot;}
+  (Session info: chrome=88.0.4324.190)</div></td>
+                </tr>
+        </table>
+
+        <h2>Scenario Summary</h2>
+            <a name="f662132513" />
+            <h3>Feature: Login</h3>
+                <div class="description"><pre>	Login to Buggy Cars Rating</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-1239413637.0">Scenario: Login to Buggy Cars Rating site with correct password</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:04.8710958</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1232851961.0">Scenario: Login to Buggy Cars Rating site with wrong details</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:04.4828175</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f-1475524986" />
+            <h3>Feature: NavLinks</h3>
+                <div class="description"><pre>	Verify if links are accessible</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-1950380561.0">Scenario: Navigate back to homepage from Overall Rating</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:04.3527319</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t518483837.0">Scenario: Navigate back to homepage from Popular Model</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:04.3471455</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-44162908.0">Scenario: Navigate back to homepage from Popular Make</a>
+            <a href="#t-44162908.1">retry #1</a>
+            <a href="#t-44162908.2">retry #2</a>
+
+                        </td>
+                        
+                            <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 599px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:13.0816278</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f-648749121" />
+            <h3>Feature: Register</h3>
+                <div class="description"><pre>	Register with Buggy Cars Rating</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-1682960080.0">Scenario: Register with correct details</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:09.0986630</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1066704782.0">Scenario: Register with incorrect password - Username already taken</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:06.5896355</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t244080550.0">Scenario: Register with incorrect password - Minumum password</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:07.5365149</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t2095045589.0">Scenario: Register with incorrect password - Password do not match</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:04.5110150</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f878501452" />
+            <h3>Feature: Update Profile</h3>
+                <div class="description"><pre>		Update Profile details</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t486101386.0">Scenario: Update Profile with correct details</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:14.2559963</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t-696121423.0">Scenario: Update Profile with incorrect Age Range</a>
+            <a href="#t-696121423.1">retry #1</a>
+            <a href="#t-696121423.2">retry #2</a>
+
+                        </td>
+                        
+                            <td>
+            67%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 399px;" 
+           title="0 succeeded" 
+                   ></a>
+    </td>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="0 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1 (test executions: 3)</td>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:40.2260298</td>
+
+                        
+                    </tr>
+            </table>
+            <a name="f-1938854756" />
+            <h3>Feature: Vote</h3>
+                <div class="description"><pre>	Vote Cars Rating</pre>
+                </div>
+            <table class="testEvents">
+                    <tr>
+            <th>Test</th>
+        <th colspan="2">Success rate</th>
+        <th>Tests</th>
+        <th>Succeeded</th>
+        <th>Failed</th>
+        <th>Pending</th>
+        <th>Ignored</th>
+        <th>Skipped</th>
+            <th>Duration</th>
+    </tr>
+
+                    <tr>
+                        <td>
+                                    <a href="#t-271531586.0">Scenario: Vote via Popular Model Link</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:11.0800230</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1406043329.0">Scenario: Vote via Popular Make Link</a>
+
+                        </td>
+                        
+                            <td>
+            100%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSucceeded" 
+           style="width: 199px;" 
+           title="1 succeeded" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:12.8556724</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t1834244136.0">Scenario: Vote via Overall Rating Link</a>
+
+                        </td>
+                        
+                            <td>
+            0%
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorFailed" 
+           style="width: 199px;" 
+           title="1 failed" 
+                          href="#error_summary"
+        ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+        <td>00:00:08.0961551</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t927851039.0">Scenario: Unable to vote without logging in - From Popular Model</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000214</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t502242144.0">Scenario: Unable to vote without logging in - From Popular Make</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000051</td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                    <a href="#t155735297.0">Scenario: Unable to vote without logging in - From Overall Rating</a>
+
+                        </td>
+                        
+                            <td>
+            n/a
+    </td>
+    <td>
+            <table class="timelineview" cellpadding="0" cellspacing="0">
+        <tr>
+    <td>
+        <a class="bar colorSkipped" 
+           style="width: 199px;" 
+           title="1 skipped" 
+                   ></a>
+    </td>
+        </tr>
+    </table>
+
+    </td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+        <td>00:00:00.0000007</td>
+
+                        
+                    </tr>
+            </table>
+
+        <h2>Execution Details</h2>
+            <a name="t-1239413637.0" />
+            <h3>Scenario: Login to Buggy Cars Rating site with correct password (in BuggyCars, Login)</h3>
+                <div class="description">
+                    tags: correctlogin
+                </div>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:36:22 PM</li>
+                <li>Execution time (sec): 4.8710958</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.549s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password  |
+  | skyreign | Chasec20. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">done: LoginSteps.GivenIEnterTheFollowingDetails(&lt;table&gt;) (0.1s)</pre>
+                        </td>
+                        <td>Succeeded in 0.076s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">done: LoginSteps.GivenIClickLoginButton() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.038s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see my Profile link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with correct password] -->
+                            <pre class="log">done: LoginSteps.ThenIShouldSeeMyProfileLink() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.021s</td>
+                    </tr>
+            </table>
+            <a name="t1232851961.0" />
+            <h3>Scenario: Login to Buggy Cars Rating site with wrong details (in BuggyCars, Login)</h3>
+                <div class="description">
+                    tags: incorrectlogin
+                </div>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:36:27 PM</li>
+                <li>Execution time (sec): 4.4828175</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.116s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the following details
+  --- table step argument ---
+  | UserName | Password |
+  | skyreign | 1234     |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">done: LoginSteps.GivenIEnterTheFollowingDetails(&lt;table&gt;) (0.1s)</pre>
+                        </td>
+                        <td>Succeeded in 0.084s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the login button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">done: LoginSteps.GivenIClickLoginButton() (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.083s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then login failed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Login to Buggy Cars Rating site with wrong details] -->
+                            <pre class="log">done: LoginSteps.ThenLoginFailed() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.047s</td>
+                    </tr>
+            </table>
+            <a name="t-1950380561.0" />
+            <h3>Scenario: Navigate back to homepage from Overall Rating (in BuggyCars, NavLinks)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:36:31 PM</li>
+                <li>Execution time (sec): 4.3527319</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.108s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I Navigate to any pagename
+  --- table step argument ---
+  | PageName       |
+  | Overall Rating |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log">done: NavLinksSteps.WhenINavigateToAnyPagename(&lt;table&gt;) (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.07s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should be able to navigate back to my homepage</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Navigate back to homepage from Overall Rating] -->
+                            <pre class="log">done: NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.032s</td>
+                    </tr>
+            </table>
+            <a name="t518483837.0" />
+            <h3>Scenario: Navigate back to homepage from Popular Model (in BuggyCars, NavLinks)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:36:36 PM</li>
+                <li>Execution time (sec): 4.3471455</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Navigate back to homepage from Popular Model] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.107s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I Navigate to any pagename
+  --- table step argument ---
+  | PageName      |
+  | Popular Model |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Navigate back to homepage from Popular Model] -->
+                            <pre class="log">done: NavLinksSteps.WhenINavigateToAnyPagename(&lt;table&gt;) (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.062s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should be able to navigate back to my homepage</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Navigate back to homepage from Popular Model] -->
+                            <pre class="log">done: NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.031s</td>
+                    </tr>
+            </table>
+            <a name="t-44162908.0" />
+            <h3>Scenario: Navigate back to homepage from Popular Make (in BuggyCars, NavLinks)</h3>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:36:40 PM</li>
+                <li>Execution time (sec): 4.4241232</li>
+                <li>Thread: #0</li>
+                <li>Error:   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.145s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I Navigate to any pagename
+  --- table step argument ---
+  | PageName     |
+  | Popular Make |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">done: NavLinksSteps.WhenINavigateToAnyPagename(&lt;table&gt;) (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.07s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should be able to navigate back to my homepage</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">error:   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+ (0.1s)</pre>
+                                <div class="errorMessage">  Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+</div>
+                                <pre class="stackTrace">NUnit.Framework.AssertionException:   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+   at NUnit.Framework.Assert.ReportFailure(String message)
+   at NUnit.Framework.Assert.ReportFailure(ConstraintResult result, String message, Object[] args)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
+   at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+   at BCars.Steps.NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() in C:\BuggyCars\Steps\NavLinksSteps.cs:line 48
+   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Bindings\BindingInvoker.cs:line 73
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 569
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 493
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.NavLinksFeature.ScenarioCleanup()
+   at BuggyCars.Features.NavLinksFeature.NavigateBackToHomepageFromPopularMake() in C:\BuggyCars\Features\NavLinks.feature:line 23
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0.067s</td>
+                    </tr>
+            </table>
+            <a name="t-44162908.1" />
+            <h3>Scenario: Navigate back to homepage from Popular Make (in BuggyCars, NavLinks) retry #1</h3>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:36:44 PM</li>
+                <li>Execution time (sec): 4.3302372</li>
+                <li>Thread: #0</li>
+                <li>Error: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.106s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I Navigate to any pagename
+  --- table step argument ---
+  | PageName     |
+  | Popular Make |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">done: NavLinksSteps.WhenINavigateToAnyPagename(&lt;table&gt;) (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.062s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should be able to navigate back to my homepage</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">error: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+ (0.0s)</pre>
+                                <div class="errorMessage">Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+</div>
+                                <pre class="stackTrace">NUnit.Framework.AssertionException: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+
+   at NUnit.Framework.Assert.ReportFailure(String message)
+   at NUnit.Framework.Assert.ReportFailure(ConstraintResult result, String message, Object[] args)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
+   at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+   at BCars.Steps.NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() in C:\BuggyCars\Steps\NavLinksSteps.cs:line 48
+   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Bindings\BindingInvoker.cs:line 73
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 569
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 493
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.NavLinksFeature.ScenarioCleanup()
+   at BuggyCars.Features.NavLinksFeature.NavigateBackToHomepageFromPopularMake() in C:\BuggyCars\Features\NavLinks.feature:line 23
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0.03s</td>
+                    </tr>
+            </table>
+            <a name="t-44162908.2" />
+            <h3>Scenario: Navigate back to homepage from Popular Make (in BuggyCars, NavLinks) retry #2</h3>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:36:49 PM</li>
+                <li>Execution time (sec): 4.3272674</li>
+                <li>Thread: #0</li>
+                <li>Error: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  3)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.095s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I Navigate to any pagename
+  --- table step argument ---
+  | PageName     |
+  | Popular Make |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">done: NavLinksSteps.WhenINavigateToAnyPagename(&lt;table&gt;) (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.068s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should be able to navigate back to my homepage</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Navigate back to homepage from Popular Make] -->
+                            <pre class="log">error: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  3)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+ (0.0s)</pre>
+                                <div class="errorMessage">Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  3)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+</div>
+                                <pre class="stackTrace">NUnit.Framework.AssertionException: Multiple failures or warnings in test:
+  1)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  2)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+  3)   Expected string length 54 but was 29. Strings differ at index 29.
+  Expected: &quot;https://buggy.justtestit.org/make/c0bm09bgagshpkqbsuag&quot;
+  But was:  &quot;https://buggy.justtestit.org/&quot;
+  ----------------------------------------^
+
+
+   at NUnit.Framework.Assert.ReportFailure(String message)
+   at NUnit.Framework.Assert.ReportFailure(ConstraintResult result, String message, Object[] args)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
+   at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+   at BCars.Steps.NavLinksSteps.ThenIShouldBeAbleToNavigateBackToMyHomepage() in C:\BuggyCars\Steps\NavLinksSteps.cs:line 48
+   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Bindings\BindingInvoker.cs:line 73
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 569
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 493
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.NavLinksFeature.ScenarioCleanup()
+   at BuggyCars.Features.NavLinksFeature.NavigateBackToHomepageFromPopularMake() in C:\BuggyCars\Features\NavLinks.feature:line 23
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 0.031s</td>
+                    </tr>
+            </table>
+            <a name="t-1682960080.0" />
+            <h3>Scenario: Register with correct details (in BuggyCars, Register)</h3>
+                <div class="description">
+                    tags: registercorrectdetails
+                </div>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:36:53 PM</li>
+                <li>Execution time (sec): 9.098663</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with correct details] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.084s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And click the Register link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with correct details] -->
+                            <pre class="log">done: RegisterSteps.GivenClickTheRegisterLink() (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.055s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the register my details with random username
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Steph     | Fhel     | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with correct details] -->
+                            <pre class="log">done: RegisterSteps.GivenIEnterTheRegisterMyDetailsWithRandomUsername(&lt;table&gt;) (0.2s)</pre>
+                        </td>
+                        <td>Succeeded in 0.192s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Register button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Register with correct details] -->
+                            <pre class="log">done: RegisterSteps.WhenIClickTheRegisterButton() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.039s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see success message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Register with correct details] -->
+                            <pre class="log">done: RegisterSteps.ThenIShouldSeeSuccessMessageDisplayed() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.016s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I can Login successfully using the newly registered user</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Register with correct details] -->
+                            <pre class="log">done: RegisterSteps.ThenICanLoginSuccessfullyUsingTheNewlyRegisteredUser() (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.119s</td>
+                    </tr>
+            </table>
+            <a name="t1066704782.0" />
+            <h3>Scenario: Register with incorrect password - Username already taken (in BuggyCars, Register)</h3>
+                <div class="description">
+                    tags: registerusernameexist
+                </div>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:37:02 PM</li>
+                <li>Execution time (sec): 6.5896355</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Username already taken] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.142s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And click the Register link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Username already taken] -->
+                            <pre class="log">done: RegisterSteps.GivenClickTheRegisterLink() (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.064s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the register my details
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | chase    | Rayze     | Korn     | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Username already taken] -->
+                            <pre class="log">done: RegisterSteps.GivenIEnterTheRegisterMyDetails(&lt;table&gt;) (0.2s)</pre>
+                        </td>
+                        <td>Succeeded in 0.173s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Register button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Register with incorrect password - Username already taken] -->
+                            <pre class="log">done: RegisterSteps.WhenIClickTheRegisterButton() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.049s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see username error message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Register with incorrect password - Username already taken] -->
+                            <pre class="log">done: RegisterSteps.ThenIShouldSeeUsernameErrorMessageDisplayed() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.016s</td>
+                    </tr>
+            </table>
+            <a name="t244080550.0" />
+            <h3>Scenario: Register with incorrect password - Minumum password (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:37:09 PM</li>
+                <li>Execution time (sec): 7.5365149</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Minumum password] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.088s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And click the Register link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Minumum password] -->
+                            <pre class="log">done: RegisterSteps.GivenClickTheRegisterLink() (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.067s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the register my details
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password | ConfirmPass |
+  | chase    | Rayze     | Korn     | 123      | 123         |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Minumum password] -->
+                            <pre class="log">done: RegisterSteps.GivenIEnterTheRegisterMyDetails(&lt;table&gt;) (0.2s)</pre>
+                        </td>
+                        <td>Succeeded in 0.176s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Register button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Register with incorrect password - Minumum password] -->
+                            <pre class="log">done: RegisterSteps.WhenIClickTheRegisterButton() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.041s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see minimum field error message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Register with incorrect password - Minumum password] -->
+                            <pre class="log">done: RegisterSteps.ThenIShouldSeeMinimumFieldErrorMessageDisplayed() (1.0s)</pre>
+                        </td>
+                        <td>Succeeded in 1.019s</td>
+                    </tr>
+            </table>
+            <a name="t2095045589.0" />
+            <h3>Scenario: Register with incorrect password - Password do not match (in BuggyCars, Register)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:37:16 PM</li>
+                <li>Execution time (sec): 4.511015</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Password do not match] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.119s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And click the Register link</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Password do not match] -->
+                            <pre class="log">done: RegisterSteps.GivenClickTheRegisterLink() (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.058s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I enter the register my details
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password | ConfirmPass |
+  | chase    | Rayze     | Korn     | Qwerty!  | Qwertyuiop  |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Register with incorrect password - Password do not match] -->
+                            <pre class="log">done: RegisterSteps.GivenIEnterTheRegisterMyDetails(&lt;table&gt;) (0.2s)</pre>
+                        </td>
+                        <td>Succeeded in 0.168s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see password do not match error message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Register with incorrect password - Password do not match] -->
+                            <pre class="log">done: RegisterSteps.ThenIShouldSeePasswordDoNotMatchErrorMessageDisplayed() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.018s</td>
+                    </tr>
+            </table>
+            <a name="t486101386.0" />
+            <h3>Scenario: Update Profile with correct details (in BuggyCars, Update Profile)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:37:21 PM</li>
+                <li>Execution time (sec): 14.2559963</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with correct details] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.091s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Rayze     | Korn     | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with correct details] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.397s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I navigate to Profile</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with correct details] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenINavigateToProfile() (3.1s)</pre>
+                        </td>
+                        <td>Succeeded in 3.077s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I update my details
+  --- table step argument ---
+  | Name  | Surname | Gender | Age | Address    | Phone    | Hobby       | Cpass       | Npass     | Conpass   |
+  | Aespa | Cnblue  | Female | 16  | My Address | 38207434 | Video Games | Qwerty1234! | Chasec29. | Chasec29. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with correct details] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenIUpdateMyDetails(&lt;table&gt;) (0.4s)</pre>
+                        </td>
+                        <td>Succeeded in 0.441s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Save button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with correct details] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenIClickTheSaveButton() (4.1s)</pre>
+                        </td>
+                        <td>Succeeded in 4.057s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see my details successfully updated</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Update Profile with correct details] -->
+                            <pre class="log">done: UpdateProfileSteps.ThenIShouldSeeMyDetailsSuccessfullyUpdated() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.047s</td>
+                    </tr>
+            </table>
+            <a name="t-696121423.0" />
+            <h3>Scenario: Update Profile with incorrect Age Range (in BuggyCars, Update Profile)</h3>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:37:35 PM</li>
+                <li>Execution time (sec): 7.7213628</li>
+                <li>Thread: #0</li>
+                <li>Error: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//a[@class=&#39;nav-link&#39;][text()=&#39;Profile&#39;]&quot;}
+  (Session info: chrome=88.0.4324.190)</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.154s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Zane      | Valorant | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.404s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I navigate to Profile</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">error: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//a[@class='nav-link'][text()='Profile']&quot;}
+  (Session info: chrome=88.0.4324.190) (1.0s)</pre>
+                                <div class="errorMessage">no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//a[@class='nav-link'][text()='Profile']&quot;}
+  (Session info: chrome=88.0.4324.190)</div>
+                                <pre class="stackTrace">OpenQA.Selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//a[@class='nav-link'][text()='Profile']&quot;}
+  (Session info: chrome=88.0.4324.190)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.UnpackAndThrowOnError(Response errorResponse)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.FindElement(String mechanism, String value)
+   at BCars.Pages.LoginPage.get_lnkProfile() in C:\BuggyCars\Pages\LoginPage.cs:line 13
+   at BCars.Pages.LoginPage.ClickProfileLink() in C:\BuggyCars\Pages\LoginPage.cs:line 17
+   at BCars.Steps.UpdateProfileSteps.WhenINavigateToProfile() in C:\BuggyCars\Steps\UpdateProfileSteps.cs:line 31
+   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Bindings\BindingInvoker.cs:line 88
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 543
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.UpdateProfileFeature.ScenarioCleanup()
+   at BuggyCars.Features.UpdateProfileFeature.UpdateProfileWithIncorrectAgeRange() in C:\BuggyCars\Features\UpdateProfile.feature:line 27
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 1.02s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I update my details
+  --- table step argument ---
+  | Name   | Surname   | Gender | Age   | Address    | Phone    | Hobby       | Cpass       | Npass     | Conpass   |
+  | Jennie | Blackpink | Female | 43442 | My Address | 38207434 | Video Games | Qwerty1234! | Chasec29. | Chasec29. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.002s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Save button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see Incorrect Range Error Message</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+            </table>
+            <a name="t-696121423.1" />
+            <h3>Scenario: Update Profile with incorrect Age Range (in BuggyCars, Update Profile) retry #1</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:37:43 PM</li>
+                <li>Execution time (sec): 16.2305019</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.088s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Zane      | Valorant | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.405s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I navigate to Profile</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenINavigateToProfile() (3.1s)</pre>
+                        </td>
+                        <td>Succeeded in 3.078s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I update my details
+  --- table step argument ---
+  | Name   | Surname   | Gender | Age   | Address    | Phone    | Hobby       | Cpass       | Npass     | Conpass   |
+  | Jennie | Blackpink | Female | 43442 | My Address | 38207434 | Video Games | Qwerty1234! | Chasec29. | Chasec29. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenIUpdateMyDetails(&lt;table&gt;) (0.4s)</pre>
+                        </td>
+                        <td>Succeeded in 0.442s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Save button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenIClickTheSaveButton() (4.0s)</pre>
+                        </td>
+                        <td>Succeeded in 4.046s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see Incorrect Range Error Message</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.ThenIShouldSeeIncorrectRangeErrorMessage() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.025s</td>
+                    </tr>
+            </table>
+            <a name="t-696121423.2" />
+            <h3>Scenario: Update Profile with incorrect Age Range (in BuggyCars, Update Profile) retry #2</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:37:59 PM</li>
+                <li>Execution time (sec): 16.2741651</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.123s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Zane      | Valorant | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.415s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I navigate to Profile</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenINavigateToProfile() (3.1s)</pre>
+                        </td>
+                        <td>Succeeded in 3.082s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I update my details
+  --- table step argument ---
+  | Name   | Surname   | Gender | Age   | Address    | Phone    | Hobby       | Cpass       | Npass     | Conpass   |
+  | Jennie | Blackpink | Female | 43442 | My Address | 38207434 | Video Games | Qwerty1234! | Chasec29. | Chasec29. |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenIUpdateMyDetails(&lt;table&gt;) (0.4s)</pre>
+                        </td>
+                        <td>Succeeded in 0.441s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I click the Save button</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.WhenIClickTheSaveButton() (4.0s)</pre>
+                        </td>
+                        <td>Succeeded in 4.039s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I should see Incorrect Range Error Message</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Update Profile with incorrect Age Range] -->
+                            <pre class="log">done: UpdateProfileSteps.ThenIShouldSeeIncorrectRangeErrorMessage() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.024s</td>
+                    </tr>
+            </table>
+            <a name="t-271531586.0" />
+            <h3>Scenario: Vote via Popular Model Link (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:38:15 PM</li>
+                <li>Execution time (sec): 11.080023</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Vote via Popular Model Link] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 1.986s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Kobe      | Vinski   | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Vote via Popular Model Link] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.403s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I select the model and input my comments
+  --- table step argument ---
+  | VotingType    | Comment |
+  | Popular Model | 안녕하세요   |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Vote via Popular Model Link] -->
+                            <pre class="log">done: VoteSteps.WhenISelectTheModelAndInputMyComments(&lt;table&gt;) (2.1s)</pre>
+                        </td>
+                        <td>Succeeded in 2.099s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I click vote</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Vote via Popular Model Link] -->
+                            <pre class="log">done: VoteSteps.WhenIClickVote() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.034s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I can see the success message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Vote via Popular Model Link] -->
+                            <pre class="log">done: VoteSteps.ThenICanSeeTheSuccessMessageDisplayed() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.025s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I Cannot vote again on the same model</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Vote via Popular Model Link] -->
+                            <pre class="log">done: VoteSteps.ThenICannotVoteAgainOnTheSameModel() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.012s</td>
+                    </tr>
+            </table>
+            <a name="t1406043329.0" />
+            <h3>Scenario: Vote via Popular Make Link (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Succeeded</li>
+                <li>Start time: 3/4/2021 5:38:26 PM</li>
+                <li>Execution time (sec): 12.8556724</li>
+                <li>Thread: #0</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Vote via Popular Make Link] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.096s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | Leo       | Carp     | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Vote via Popular Make Link] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.408s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I select the model and input my comments
+  --- table step argument ---
+  | VotingType   | Comment |
+  | Popular Make | 안녕하세요   |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Vote via Popular Make Link] -->
+                            <pre class="log">done: VoteSteps.WhenISelectTheModelAndInputMyComments(&lt;table&gt;) (4.1s)</pre>
+                        </td>
+                        <td>Succeeded in 4.146s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I click vote</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Vote via Popular Make Link] -->
+                            <pre class="log">done: VoteSteps.WhenIClickVote() (2.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.03s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I can see the success message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Vote via Popular Make Link] -->
+                            <pre class="log">done: VoteSteps.ThenICanSeeTheSuccessMessageDisplayed() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.015s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I Cannot vote again on the same model</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Vote via Popular Make Link] -->
+                            <pre class="log">done: VoteSteps.ThenICannotVoteAgainOnTheSameModel() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 0.011s</td>
+                    </tr>
+            </table>
+            <a name="t1834244136.0" />
+            <h3>Scenario: Vote via Overall Rating Link (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Failed</li>
+                <li>Start time: 3/4/2021 5:38:39 PM</li>
+                <li>Execution time (sec): 8.0961551</li>
+                <li>Thread: #0</li>
+                <li>Error: no such element: Unable to locate element: {&quot;method&quot;:&quot;link text&quot;,&quot;selector&quot;:&quot;Veneno&quot;}
+  (Session info: chrome=88.0.4324.190)</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Given I launch the application</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Vote via Overall Rating Link] -->
+                            <pre class="log">done: LoginSteps.GivenILaunchTheApplication() (0.0s)</pre>
+                        </td>
+                        <td>Succeeded in 2.453s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And Register and Login
+  --- table step argument ---
+  | UserName | FirstName | LastName | Password    | ConfirmPass |
+  | random   | John      | Chui     | Qwerty1234! | Qwerty1234! |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestArrange: Scenario - Vote via Overall Rating Link] -->
+                            <pre class="log">done: VoteSteps.GivenRegisterAndLogin(&lt;table&gt;) (4.4s)</pre>
+                        </td>
+                        <td>Succeeded in 4.428s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">When I select the model and input my comments
+  --- table step argument ---
+  | VotingType     | Comment |
+  | Overall Rating | 안녕하세    |</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Vote via Overall Rating Link] -->
+                            <pre class="log">error: no such element: Unable to locate element: {&quot;method&quot;:&quot;link text&quot;,&quot;selector&quot;:&quot;Veneno&quot;}
+  (Session info: chrome=88.0.4324.190) (1.1s)</pre>
+                                <div class="errorMessage">no such element: Unable to locate element: {&quot;method&quot;:&quot;link text&quot;,&quot;selector&quot;:&quot;Veneno&quot;}
+  (Session info: chrome=88.0.4324.190)</div>
+                                <pre class="stackTrace">OpenQA.Selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;link text&quot;,&quot;selector&quot;:&quot;Veneno&quot;}
+  (Session info: chrome=88.0.4324.190)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.UnpackAndThrowOnError(Response errorResponse)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.FindElement(String mechanism, String value)
+   at OpenQA.Selenium.Remote.RemoteWebDriver.FindElementByLinkText(String linkText)
+   at OpenQA.Selenium.By.&lt;&gt;c__DisplayClass17_0.&lt;LinkText&gt;b__0(ISearchContext context)
+   at BCars.Pages.VotePage.get_ModelName() in C:\BuggyCars\Pages\VotePage.cs:line 12
+   at BCars.Pages.VotePage.PopularModelName() in C:\BuggyCars\Pages\VotePage.cs:line 23
+   at BCars.Steps.VoteSteps.WhenISelectTheModelAndInputMyComments(Table table) in C:\BuggyCars\Steps\VoteSteps.cs:line 74
+   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration) in D:\a\1\s\TechTalk.SpecFlow\Bindings\BindingInvoker.cs:line 88
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance) in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 543
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep() in D:\a\1\s\TechTalk.SpecFlow\Infrastructure\TestExecutionEngine.cs:line 268
+   at TechTalk.SpecRun.SpecFlowPlugin.Runtime.RunnerTestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors() in D:\a\1\s\TechTalk.SpecFlow\TestRunner.cs:line 60
+   at BuggyCars.Features.VoteFeature.ScenarioCleanup()
+   at BuggyCars.Features.VoteFeature.VoteViaOverallRatingLink() in C:\BuggyCars\Features\Vote.feature:line 38
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.ExecuteInternal(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TaskExecutors.StaticOrInstanceMethodExecutor.Execute(ITestThreadExecutionContext testThreadExecutionContext)
+   at TechTalk.SpecRun.Framework.TestNodeTask.Execute()</pre>
+                        </td>
+                        <td>Failed in 1.071s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I click vote</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAct: Scenario - Vote via Overall Rating Link] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">Then I can see the success message displayed</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Vote via Overall Rating Link] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0s</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre class="log">And I Cannot vote again on the same model</pre>
+                        </td>
+                        <td>
+                            <!-- [TestAssert: Scenario - Vote via Overall Rating Link] -->
+                            <pre class="log">skipped because of previous errors</pre>
+                        </td>
+                        <td>Skipped in 0.001s</td>
+                    </tr>
+            </table>
+            <a name="t927851039.0" />
+            <h3>Scenario: Unable to vote without logging in - From Popular Model (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:38:47 PM</li>
+                <li>Execution time (sec): 2.14E-05</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t502242144.0" />
+            <h3>Scenario: Unable to vote without logging in - From Popular Make (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:38:47 PM</li>
+                <li>Execution time (sec): 5.1E-06</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+            <a name="t155735297.0" />
+            <h3>Scenario: Unable to vote without logging in - From Overall Rating (in BuggyCars, Vote)</h3>
+            <ul>
+                <li>Status: Skipped</li>
+                <li>Start time: 3/4/2021 5:38:47 PM</li>
+                <li>Execution time (sec): 7E-07</li>
+                <li>Thread: #-1</li>
+            </ul>
+            <table class="testEvents">
+                <tr>
+                    <th>Steps</th>
+                    <th>Trace</th>
+                    <th>Result</th>
+                </tr>
+            </table>
+	</body>
+</html>
